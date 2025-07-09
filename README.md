@@ -60,7 +60,7 @@ trainersamay/
 ### 1. **Clone the repo**
 
 ```bash
-git clone https://github.com/yourusername/trainersamay.git
+git clone https://github.com/IJNikhil/TrainerSamay.git
 cd trainersamay
 ```
 
