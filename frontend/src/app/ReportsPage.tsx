@@ -140,7 +140,8 @@ const sessionsToShow = useMemo(() => {
   const handleExport = useCallback(() => {
     if (!sessionsToShow.length) return;
 
-    const getTrainerName = (trainerId: string) => trainers.find(t => t.id === trainerId)?.name || 'N/A';
+    const getTrainerName = (trainerId: string | number) =>
+  trainers.find(t => String(t.id) === String(trainerId))?.name || 'Unknown';
 
     const headers = user?.role === 'admin'
       ? ['Date', 'Time', 'Trainer', 'Batch', 'Session Type', 'Status', 'Notes']
