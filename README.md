@@ -1,40 +1,62 @@
+# ⏰ TrainerSamay
 
-# 🏋️‍♂️ TrainerSamay
+A lightweight, full-stack trainer scheduling and session management platform.  
+Built with **Django** (backend) and **React + Vite + Tailwind CSS** (frontend), it helps training centers streamline trainer schedules using a clean, calendar-based interface.
 
-A modern, full-stack gym/fitness management platform for trainers and admins.  
-Built with **Django** (backend) and **React + Vite + Tailwind CSS** (frontend).
+---
+
+## 🎯 Project Objective
+
+Training centers often struggle to keep trainers informed of their upcoming sessions in a clear and centralized way. Spreadsheets and manual coordination are error-prone and inefficient.
+
+This application solves that by offering:
+
+- A centralized **calendar view** of each trainer's scheduled sessions.
+- A **login system** for trainers to see their own schedules.
+- An **admin view** (optional) to oversee all trainers' utilization.
+- Real-time data from the **CMIS MySQL database**, using the `trainer_utilization` and `member` tables.
 
 ---
 
 ## 🚀 Key Features
 
-- **Role-Based Access Control:** Secure login system differentiating between `admin` and `trainer` roles, each with a tailored user experience.
-- **Interactive Dashboard:** Admins get a comprehensive overview of all operations, including trainer utilization charts and session statistics. Trainers see a focused view of their upcoming schedule and session details.
-- **Advanced Session Scheduling:**
-  - **Multiple Calendar Views:** Month, Week, and Agenda views offer flexible ways to manage schedules.
-  - **Smart Scheduling:** The session creation dialog checks for trainer availability and scheduling conflicts in real-time.
-  - **Recurring Sessions:** Trainers can schedule their own sessions that repeat weekly.
-  - **Automatic Absence Marking:** Sessions not started within a grace period are auto-marked as "Absent".
-- **Availability Management:** Trainers can easily set and update their weekly availability, which is visible to admins.
-- **User Management (Admin):** Admins have full CRUD (Create, Read, Update, Delete) capabilities for user accounts.
-- **Reporting & Analytics:** A dedicated reports page with powerful filtering options and the ability to export session data to CSV.
-- **Error Handling:** All API calls surface clear error messages in the UI.
-- **Polished & Responsive UI:** Built with ShadCN UI and Tailwind CSS, the application is fully responsive and features a modern, clean aesthetic with light and dark modes.
-- **Secure REST API:** Token and session authentication supported.
+- **Trainer Login System**
+  - Login via email or ID (fetched from the `member` table).
+  - Secure authentication via tokens or sessions.
+
+- **Session Calendar View**
+  - Weekly and Monthly calendar interfaces.
+  - Session info (course name, time, location) visible on hover or click.
+  - Uses the `trainer_utilization` table for schedule data.
+
+- **Personalized Schedule View**
+  - Trainers see only their own sessions after login.
+  - Admin (optional) can see all trainers’ calendars.
+
+- **Session Highlights**
+  - Today's or upcoming sessions are visually emphasized.
+
+- **Session Auto-Mark as Absent**
+  - Sessions are automatically marked "Absent" if not started in time.
+
+- **Simple Admin Management**
+  - Admins can create/update trainers, manage sessions, and view overall trainer utilization.
+
+- **Responsive UI**
+  - Built with ShadCN UI and Tailwind CSS.
+  - Works smoothly across desktops, tablets, and mobile.
 
 ---
 
 ## ✨ Recent Updates
 
-- **Automatic Session Absence**
-  - Sessions are auto-marked "Absent" if not started within a grace period:
-    - Sessions ≤ 60 mins → 50% of the duration (e.g. 30 mins for 60-min session)
-    - Sessions > 60 mins → 30 mins after scheduled start
-  - Implemented via a Django management command
-- **Improved Trainer Name Rendering**: Trainer names are correctly displayed across all views.
-- **Detailed API Error Feedback**: Enhanced feedback for network/API failures.
-- **TimeZone Set to IST (Asia/Kolkata)**: Ensures proper scheduling and reporting for Indian region.
-- **Custom Email Login Backend**: Login via email supported via custom Django backend.
+- **Trainer Filtering on Login**: Automatically shows only the logged-in trainer’s sessions.
+- **Auto-Mark Absent**: Sessions are marked absent if not started:
+  - ≤ 60 mins → 50% of session time
+  - > 60 mins → 30 mins grace period
+- **Trainer Name Rendering**: Fixed display inconsistencies across all views.
+- **Improved Error Feedback**: All API issues now show detailed messages.
+- **Timezone Set to Asia/Kolkata**: Ensures accurate calendar rendering.
 
 ---
 
@@ -77,15 +99,15 @@ source venv/bin/activate  # For Linux/macOS
 pip install -r requirements.txt
 ```
 
-Create a `.env` file and configure database, secret key, etc. Then run:
+Create a `.env` file and configure environment variables, then run:
 
 ```bash
 python manage.py migrate
-python manage.py createsuperuser  # Setup admin user
+python manage.py seedadmin  # Setup initial admin account
 python manage.py runserver
 ```
 
-#### ✅ Sample `.env` for Backend (do NOT commit this to git)
+#### ✅ Sample `.env` for Backend (Do NOT commit this to Git):
 
 ```env
 # Database
