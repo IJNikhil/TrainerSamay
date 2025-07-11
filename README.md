@@ -44,32 +44,6 @@ This platform solves the problem with a **calendar-based app** that connects to 
 
 ## 📸 Screenshots
 
-### 🏠 Dashboard
-![Dashboard](screenshots/dashboard.png)
-*Admin dashboard showing trainer utilization and session overview*
-
-### 🔐 Login Page
-![Login](screenshots/login.png)
-*Secure email-based authentication for trainers and admins*
-
-### 📅 Calendar View
-![Calendar](screenshots/calendar.png)
-*Interactive calendar with monthly, weekly, and agenda views*
-
-### 👥 Admin Panel
-![Admin Panel](screenshots/admin-panel.png)
-*User management and session scheduling interface*
-
-### 📊 Reports
-![Reports](screenshots/reports.png)
-*Export functionality and session analytics*
-
-### 📱 Mobile Responsive
-![Mobile View](screenshots/mobile.png)
-*Responsive design works seamlessly on all devices*
-
-## 📸 Screenshots
-
 ### 🔐 Authentication
 ![Login Page](screenshots/loginPage.png)
 *Secure email-based authentication for trainers and admins*
