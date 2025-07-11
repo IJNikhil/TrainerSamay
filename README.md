@@ -75,22 +75,15 @@ All screenshots below showcase the Trainer Calendar App’s interface on laptop/
 
 #### Scheduling & Calendar
 
-| Calendar View | Agenda View | Session Creation |
-|:-------------:|:-----------:|:----------------:|
-| ![Calendar](screenshots/calendar_view.png) | ![Agenda](screenshots/agendaView.png) | ![Session Creation](screenshots/creatingNewSession.png) |
-| *Monthly/weekly calendar with color-coded sessions* | *Detailed agenda of upcoming sessions* | *Add new sessions with conflict detection* |
+| Calendar View | Agenda View |
+|:-------------:|:-----------:|
+| ![Calendar](screenshots/calendar_view.png) | ![Agenda](screenshots/agendaView.png) |
+| *Monthly/weekly calendar with color-coded sessions* | *Detailed agenda of upcoming sessions* |
 
-| Advanced Session | Session Details |
-|:----------------:|:---------------:|
-| ![Advanced Session](screenshots/creatingNewSession_two.png) | ![Session Details](screenshots/sessionDetails.png) |
-| *Advanced scheduling with trainer/time selection* | *View and manage session details* |
-
-#### Data Export
-
-| Export Reports |
-|:--------------:|
-| ![Export](screenshots/adminExportReports.png) |
-| *Export session data and analytics* |
+| Session Details | Export Reports |
+|:---------------:|:--------------:|
+| ![Session Details](screenshots/sessionDetails.png) | ![Export](screenshots/adminExportReports.png) |
+| *View and manage session details* | *Export session data and analytics* |
 
 ---
 
@@ -103,6 +96,13 @@ All screenshots below showcase the Trainer Calendar App’s interface on laptop/
 | ![Trainer Dashboard](screenshots/trainerDashboard.png) | ![Trainer Calendar](screenshots/trainerCalendar.png) |
 | *Upcoming sessions at a glance* | *Personalized calendar view* |
 
+#### Session Scheduling & Management
+
+| Add Session | Advanced Scheduling | Start Session |
+|:-----------:|:-------------------:|:-------------:|
+| ![Session Creation](screenshots/creatingNewSession.png) | ![Advanced Session](screenshots/creatingNewSession_two.png) | ![Start Session](screenshots/trainerStartSession.png) |
+| *Add new sessions with conflict detection* | *Advanced scheduling with trainer/time selection* | *Start sessions and track attendance* |
+
 #### Profile & Availability
 
 | Trainer Profile | Trainer Availability |
@@ -110,12 +110,12 @@ All screenshots below showcase the Trainer Calendar App’s interface on laptop/
 | ![Trainer Profile](screenshots/trainerProfile.png) | ![Trainer Availability](screenshots/trainerAvailability.png) |
 | *Manage profile and preferences* | *Set and update weekly availability* |
 
-#### Session Management
+#### Reports
 
-| Start Session | Trainer Reports | Exported Reports |
-|:-------------:|:---------------:|:----------------:|
-| ![Start Session](screenshots/trainerStartSession.png) | ![Trainer Reports](screenshots/trainerReport.png) | ![Trainer Exported Reports](screenshots/trainerExportedReports.png) |
-| *Start sessions and track attendance* | *View session history and stats* | *Export personal session data* |
+| Trainer Reports | Exported Reports |
+|:---------------:|:----------------:|
+| ![Trainer Reports](screenshots/trainerReport.png) | ![Trainer Exported Reports](screenshots/trainerExportedReports.png) |
+| *View session history and stats* | *Export personal session data* |
 
 ---
 ## 🛠️ Tech Stack
