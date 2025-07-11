@@ -168,22 +168,10 @@ REACT_APP_API_URL=http://localhost:8000/api
 Sessions are marked "Absent" if not started after a grace period.
 
 - **Logic:** `core/management/commands/mark_absent_sessions.py`
-- **Manual Run:** Execute every 5 minutes to check database
+- **Automatic update:** It auto-execute in every 5 minutes to check database
 
 ```bash
 python manage.py mark_absent_sessions
-```
-
-**For Automated Execution (Production):**
-
-Set up a cron job to run this command every 5 minutes:
-
-```bash
-# Edit crontab
-crontab -e
-
-# Add this line to run every 5 minutes
-*/5 * * * * /path/to/your/venv/bin/python /path/to/your/project/manage.py mark_absent_sessions
 ```
 
 ---
@@ -315,11 +303,6 @@ npm run dev
 # Build for production
 npm run build
 
-# Run linter
-npm run lint
-
-# Preview production build
-npm run preview
 ```
 
 ---
