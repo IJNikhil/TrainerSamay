@@ -42,6 +42,100 @@ This platform solves the problem with a **calendar-based app** that connects to 
 
 ---
 
+## 📸 Screenshots
+
+### 🏠 Dashboard
+![Dashboard](screenshots/dashboard.png)
+*Admin dashboard showing trainer utilization and session overview*
+
+### 🔐 Login Page
+![Login](screenshots/login.png)
+*Secure email-based authentication for trainers and admins*
+
+### 📅 Calendar View
+![Calendar](screenshots/calendar.png)
+*Interactive calendar with monthly, weekly, and agenda views*
+
+### 👥 Admin Panel
+![Admin Panel](screenshots/admin-panel.png)
+*User management and session scheduling interface*
+
+### 📊 Reports
+![Reports](screenshots/reports.png)
+*Export functionality and session analytics*
+
+### 📱 Mobile Responsive
+![Mobile View](screenshots/mobile.png)
+*Responsive design works seamlessly on all devices*
+
+## 📸 Screenshots
+
+### 🔐 Authentication
+![Login Page](screenshots/loginPage.png)
+*Secure email-based authentication for trainers and admins*
+
+### 🏠 Admin Dashboard
+![Admin Dashboard](screenshots/adminDashboard.png)
+*Comprehensive admin overview with trainer utilization charts and session statistics*
+
+### 👥 User Management
+![User Management](screenshots/adminUserManagement.png)
+*Admin interface for managing trainer and admin accounts*
+
+![User Creation](screenshots/adminUserCreation.png)
+*Creating new user accounts with role assignment*
+
+### 📅 Calendar & Scheduling
+![Calendar View](screenshots/calendar_view.png)
+*Interactive calendar with session scheduling and management*
+
+![Agenda View](screenshots/agendaView.png)
+*Agenda view showing detailed session listings*
+
+![Session Creation](screenshots/creatingNewSession.png)
+*Creating new training sessions with conflict detection*
+
+![Session Creation Details](screenshots/creatingNewSession_two.png)
+*Advanced session creation with time and trainer selection*
+
+![Session Details](screenshots/sessionDetails.png)
+*Detailed session information and management options*
+
+### 📊 Reports & Analytics
+![Admin Reports](screenshots/adminReports.png)
+*Comprehensive reporting dashboard for administrators*
+
+![Admin Export Reports](screenshots/adminExportReports.png)
+*Export functionality for session data and analytics*
+
+### 🕐 Availability Management
+![Admin Availability](screenshots/adminAvailability.png)
+*Managing trainer availability from admin perspective*
+
+### 👨‍🏫 Trainer Interface
+![Trainer Dashboard](screenshots/trainerDashboard.png)
+*Trainer's personal dashboard with upcoming sessions*
+
+![Trainer Calendar](screenshots/trainerCalendar.png)
+*Trainer's calendar view showing their scheduled sessions*
+
+![Trainer Profile](screenshots/trainerProfile.png)
+*Trainer profile management and settings*
+
+![Trainer Availability](screenshots/trainerAvailability.png)
+*Trainers can set and update their weekly availability*
+
+![Start Session](screenshots/trainerStartSession.png)
+*Session start interface with attendance tracking*
+
+### 📈 Trainer Reports
+![Trainer Reports](screenshots/trainerReport.png)
+*Individual trainer reporting and session history*
+
+![Trainer Exported Reports](screenshots/trainerExportedReports.png)
+*Export functionality for trainer-specific data*
+
+---
 ## 🛠️ Tech Stack
 
 ### Backend
