@@ -71,7 +71,7 @@ All screenshots below showcase the Trainer Calendar App’s interface on laptop/
 | User Management | User Creation | Availability |
 |:---------------:|:-------------:|:------------:|
 | ![User Management](screenshots/adminUserManagement.png) | ![User Creation](screenshots/adminUserCreation.png) | ![Admin Availability](screenshots/adminAvailability.png) |
-| *Manage trainer/admin accounts* | *Create new users with role assignment* | *Set trainer availability* |
+| *Manage trainer/admin accounts* | *Create new users with role assignment* | *View trainer availability* |
 
 #### Scheduling & Calendar
 
