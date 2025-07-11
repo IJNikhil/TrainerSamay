@@ -44,7 +44,7 @@ This platform solves the problem with a **calendar-based app** that connects to 
 
 ## 📸 App Screenshots (Laptop/Desktop Views)
 
-All screenshots below showcase the Trainer Calendar App’s interface on laptop/desktop screens, providing a clear view of the user experience on larger devices.
+All screenshots below showcase the TrainerSamay App’s interface on laptop/desktop screens, providing a clear view of the user experience on larger devices.
 
 ---
 
