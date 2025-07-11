@@ -70,17 +70,9 @@ This platform solves the problem with a **calendar-based app** that connects to 
 
 ```
 trainersamay/
-├── backend/                    # Django backend
-│   ├── core/
-│   │   ├── models.py
-│   │   ├── views.py
-│   │   ├── serializers.py
-│   │   ├── urls.py
-│   │   ├── backends.py
-│   │   └── management/
-│   │       └── commands/
-│   │           └── mark_absent_sessions.py
-│   ├── trainersamay/
+├── backend/                     # Django backend
+│   ├── core/                    # Main App Backend
+│   ├── trainersamay/            # Django backend settings
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   └── wsgi.py
@@ -89,11 +81,8 @@ trainersamay/
 │   └── requirements.txt
 ├── frontend/                   # React + Vite + Tailwind frontend
 │   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── lib/
-│   │   ├── hooks/
-│   │   └── types/
+│   │   ├── api/                # files to connect frontend with backend
+│   │   ├── ..                  # other remaining files
 │   ├── .env
 │   ├── package.json
 │   ├── vite.config.ts
