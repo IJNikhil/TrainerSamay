@@ -1,21 +1,3 @@
-// import { clsx, type ClassValue } from "clsx"
-// import { twMerge } from "tailwind-merge"
-// import { format } from "date-fns";
-
-// export function cn(...inputs: ClassValue[]) {
-//   return twMerge(clsx(inputs))
-// }
-
-// export function formatTimeString(timeString: string): string {
-//   if (!timeString.match(/^\d{2}:\d{2}$/)) {
-//     return timeString;
-//   }
-//   const date = new Date(0);
-//   const [hours, minutes] = timeString.split(':').map(Number);
-//   date.setHours(hours, minutes);
-//   return format(date, 'p');
-// }
-
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { format } from "date-fns";

@@ -50,8 +50,6 @@ export async function loginAndGetToken(
   const data = await response.json();
   console.log("Token received:", data.token);
 
-  // CRITICAL FIX: Get current user info using the token
-  // Don't filter by email - get the authenticated user directly
   const userRes = await fetch(`${API_BASE}/auth/me/`, {
     headers: { 
       Authorization: `Token ${data.token}`,
@@ -59,9 +57,7 @@ export async function loginAndGetToken(
     },
   });
   
-  // If /auth/me/ doesn't exist, create it OR use a different approach
   if (!userRes.ok) {
-    // Fallback: Use the session-based login that returns user data
     const sessionResponse = await fetch(`${API_BASE}/auth/login/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

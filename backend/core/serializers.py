@@ -2,19 +2,11 @@ from rest_framework import serializers
 from .models import User, Session, Availability
 
 class UserSerializer(serializers.ModelSerializer):
-    """
-    Serializer for reading User objects.
-    Excludes the password field to prevent it from being exposed in API responses.
-    """
     class Meta:
         model = User
         exclude = ['password']
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    """
-    Serializer for creating and updating User objects.
-    Ensures password is hashed on create/update.
-    """
     class Meta:
         model = User
         fields = '__all__'
@@ -23,10 +15,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
         }
 
     def validate_password(self, value):
-        # Add custom password validation here if needed
-        # Example:
-        # if len(value) < 6:
-        #     raise serializers.ValidationError("Password must be at least 6 characters.")
         return value
 
     def create(self, validated_data):

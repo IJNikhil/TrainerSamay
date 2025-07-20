@@ -102,7 +102,7 @@ export function SessionDetailDialog({
         <div className="py-4 space-y-5 max-h-[60vh] overflow-y-auto px-1 -mx-1">
           <div className="flex justify-between items-start px-1">
             <div>
-              <p className="text-sm text-muted-foreground">Session Type</p>
+              <p className="text-sm text-muted-foreground">Session Name/ Type</p>
               <h3 className="text-xl font-bold">{nonNullSession.sessionType}</h3>
             </div>
             <Badge className={cn("capitalize text-base font-semibold border-2", statusBadgeClasses[nonNullSession.status])}>

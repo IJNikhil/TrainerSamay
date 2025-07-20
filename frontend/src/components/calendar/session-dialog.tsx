@@ -1,5 +1,3 @@
-// src/components/calendar/session-dialog.tsx
-
 import { useEffect, useMemo, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,17 +9,17 @@ import {
   DialogHeader,
   DialogFooter,
   DialogDescription,
+  DialogTitle,
 } from "../ui/dialog";
 import { Form } from "../ui/form";
 import { Badge } from "../ui/badge";
-import { sessionTypes, sessionStatuses } from "../../lib/types";
+import { sessionStatuses } from "../../lib/types";
 import type { Session, DayOfWeek, User, Availability } from "../../lib/types";
 import { cn } from "../../lib/utils";
 import { createSession, updateSessionApi } from "../../api/sessions";
 import SessionDialogFields from "./SessionDialogFields";
 import { Button } from "../ui/button";
 
-// --- Status badge color classes ---
 const statusBadgeClasses: { [key: string]: string } = {
   Scheduled: "bg-blue-100 text-blue-800",
   Completed: "bg-green-100 text-green-800",
@@ -29,15 +27,12 @@ const statusBadgeClasses: { [key: string]: string } = {
   Absent: "bg-amber-100 text-amber-800",
 };
 
-// --- Type-safe form schema and values ---
 const formSchema = z.object({
   trainerId: z.string().min(1, "Trainer is required."),
   batch: z.string().min(1, "Batch name is required."),
-  sessionType: z.enum(sessionTypes),
+  sessionType: z.string().min(1, "Session Name/ Type is required."),
   date: z.date({ required_error: "A date is required." }),
-  time: z
-    .string()
-    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format (HH:mm)."),
+  time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format (HH:mm)."),
   duration: z.coerce.number().int().positive("Duration must be a positive number."),
   location: z.string().min(2, "Location is required."),
   notes: z.string().optional(),
@@ -99,13 +94,11 @@ export function SessionDialog({
     },
   });
 
-  // Watch values
   const selectedTrainerId = form.watch("trainerId");
   const selectedDate = form.watch("date");
   const selectedTime = form.watch("time");
   const selectedDuration = form.watch("duration");
 
-  // Find availability for selected trainer and day
   const availability = useMemo(() => {
     if (!selectedTrainerId || !selectedDate) return null;
     const dayOfWeek = format(selectedDate, "eeee") as DayOfWeek;
@@ -117,14 +110,12 @@ export function SessionDialog({
     );
   }, [selectedTrainerId, selectedDate, normalizedAvailabilities]);
 
-  // Find scheduling conflict
   const conflict = useMemo(() => {
     if (!selectedTrainerId || !selectedDate || !selectedTime || !selectedDuration) return null;
     const [hours, minutes] = selectedTime.split(":").map(Number);
     const proposedStartTime = new Date(selectedDate);
     proposedStartTime.setHours(hours, minutes, 0, 0);
     const proposedEndTime = new Date(proposedStartTime.getTime() + selectedDuration * 60000);
-
     return (
       normalizedSessions.find((s) => {
         if (String(s.trainerId) !== String(selectedTrainerId)) return false;
@@ -172,7 +163,7 @@ export function SessionDialog({
           duration: 60,
           date: new Date(),
           time: "09:00",
-          sessionType: "Strength",
+          sessionType: "",
           trainerId:
             currentTrainer
               ? String(currentTrainer.id)
@@ -187,10 +178,8 @@ export function SessionDialog({
         });
       }
     }
-    // eslint-disable-next-line
   }, [session, isOpen, form, currentTrainer, trainers]);
 
-  // --- ENFORCE: Only allow submit if there is availability and no conflict ---
   const canSubmit = !!availability && !conflict && !isSubmitting;
 
   const onSubmit: SubmitHandler<SessionFormValues> = async (values) => {
@@ -198,7 +187,6 @@ export function SessionDialog({
     setIsSubmitting(true);
     try {
       const [hours, minutes] = values.time.split(":").map(Number);
-
       if (session) {
         const combinedDate = new Date(values.date);
         combinedDate.setHours(hours, minutes, 0, 0);
@@ -227,12 +215,10 @@ export function SessionDialog({
       } else {
         const createdSessions: Session[] = [];
         const occurrences = values.isRecurring ? values.recurrenceWeeks || 1 : 1;
-
         for (let i = 0; i < occurrences; i++) {
           const sessionDate = new Date(values.date);
           sessionDate.setDate(sessionDate.getDate() + i * 7);
           sessionDate.setHours(hours, minutes, 0, 0);
-
           const result = await createSession({
             trainerId: String(values.trainerId),
             batch: values.batch,
@@ -243,7 +229,6 @@ export function SessionDialog({
             notes: values.notes,
             status: "Scheduled" as const,
           });
-
           createdSessions.push({
             id: result.id,
             trainerId: result.trainerId,
@@ -256,29 +241,24 @@ export function SessionDialog({
             status: "Scheduled",
           });
         }
-
         onSessionSave(createdSessions);
       }
-
       setIsOpen(false);
     } catch (error) {
-      console.error("Error saving session:", error);
-      // Optionally show error toast
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // --- UI starts here ---
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-lg font-bold">
+              <DialogTitle className="text-lg font-bold">
                 {session ? "Edit Session" : "New Session"}
-              </h2>
+              </DialogTitle>
               <DialogDescription>
                 {session
                   ? "Update the details for this session."
@@ -294,12 +274,10 @@ export function SessionDialog({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            {/* Trainer selection/name */}
             {currentTrainer ? (
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">Trainer</label>
                 <div className="mt-1 px-3 py-2 bg-muted rounded border">{currentTrainer.name}</div>
-                {/* Hidden input for form submission */}
                 <input type="hidden" {...form.register("trainerId")} value={currentTrainer.id} />
               </div>
             ) : (
@@ -308,7 +286,7 @@ export function SessionDialog({
                 <select
                   {...form.register("trainerId")}
                   className="mt-1 block w-full rounded border px-3 py-2"
-                  disabled={!!session} // prevent changing on edit, if desired
+                  disabled={!!session}
                 >
                   <option value="">Select trainer</option>
                   {trainers.map((t) => (
@@ -319,14 +297,13 @@ export function SessionDialog({
                 </select>
               </div>
             )}
-<SessionDialogFields
-  form={form}
-  conflict={conflict}
-  getConflictingTrainerName={getConflictingTrainerName}
-  availability={availability}
-  session={session}
-/>
-
+            <SessionDialogFields
+              form={form}
+              conflict={conflict}
+              getConflictingTrainerName={getConflictingTrainerName}
+              availability={availability}
+              session={session}
+            />
             <DialogFooter className="pt-4 mt-4 border-t">
               <Button
                 type="button"

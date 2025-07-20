@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
 import AuthenticatedLayout from "../components/layouts/authenticated-layout";
 import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar";
-import { Badge } from "../components/ui/badge"; // <-- Correct import
+import { Badge } from "../components/ui/badge";
 import { UserDialog } from "../components/users/user-dialog";
 import { useAuth } from "../hooks/use-auth";
 import { useToast } from "../hooks/use-toast";
@@ -50,8 +50,6 @@ export default function UserManagement() {
 const handleSaveUser = async (userToSave: any) => {
   try {
     const isNewUser = !users.some(u => u.id === userToSave.id);
-
-    // For new users, ensure password is present and non-empty
     if (isNewUser) {
       if (!userToSave.password || userToSave.password.length < 6) {
         toast({
@@ -67,7 +65,6 @@ const handleSaveUser = async (userToSave: any) => {
         description: `Successfully created user ${userToSave.name}.`,
       });
     } else {
-      // Remove password if blank (do not overwrite with empty string)
       const updatePayload = { ...userToSave };
       if (!updatePayload.password) delete updatePayload.password;
       await updateUser(userToSave.id, updatePayload);

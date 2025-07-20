@@ -39,8 +39,6 @@ class UserDetailController(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
 class UserPasswordChangeController(APIView):
-    # Temporarily remove authentication for debugging
-    # permission_classes = [IsAuthenticated]
 
     def patch(self, request, id):
         print("=== Password Change Attempt ===")

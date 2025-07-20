@@ -28,8 +28,8 @@ class AuthController(APIView):
             
             try:
                 user = User.objects.get(email=email)
-                print("User found:", user.email, "Role:", user.role)  # Added role logging
-                print("User ID:", user.id)  # Added ID logging
+                print("User found:", user.email, "Role:", user.role)
+                print("User ID:", user.id) 
                 
                 is_valid = check_password(password, user.password)
                 print("Password valid:", is_valid)
@@ -42,7 +42,7 @@ class AuthController(APIView):
                 print("Token created for user:", user.id, "Token:", token.key[:10] + "...")
                 
                 data = UserSerializer(user).data
-                print("Serialized user data:", data)  # Debug the serialized data
+                print("Serialized user data:", data)
                 
                 return Response({
                     'user': data, 

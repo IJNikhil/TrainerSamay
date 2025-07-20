@@ -61,13 +61,6 @@ export function UserDialog({ isOpen, setIsOpen, user, onSave, onDelete, currentU
   useEffect(() => {
     if (isOpen) {
       if (user) {
-        // form.reset({
-        //   name: user.name,
-        //   email: user.email,
-        //   role: user.role,
-        //   password: '',
-        //   avatar: user.avatar || '',
-        // });
         form.reset({
   name: user.name,
   email: user.email,

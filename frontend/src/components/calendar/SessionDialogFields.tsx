@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import {
-  sessionTypes,
+  // sessionTypes,
   sessionStatuses,
   type Session,
   type Availability,
@@ -169,14 +169,14 @@ export default function SessionDialogFields({
 
 
 
-      {/* Session Type & Duration */}
+      {/* Session Name/ Type & Duration */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <FormField
+        {/* <FormField
           control={form.control}
           name="sessionType"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Session Type</FormLabel>
+              <FormLabel>Session Name/ Type</FormLabel>
               <Select
                 onValueChange={field.onChange}
                 value={field.value}
@@ -198,7 +198,22 @@ export default function SessionDialogFields({
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
+
+        <FormField
+  control={form.control}
+  name="sessionType"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Session Name/ Type</FormLabel>
+      <FormControl>
+        <Input placeholder="Enter Session Name/ Type/name" {...field} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
         <FormField
           control={form.control}
           name="duration"

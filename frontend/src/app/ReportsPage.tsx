@@ -7,7 +7,7 @@ import {
   CalendarClock,
   AlertTriangle,
   FileDown,
-  Table as TableIcon, // <-- Avoid name clash!
+  Table as TableIcon,
 } from 'lucide-react';
 import AuthenticatedLayout from "../components/layouts/authenticated-layout";
 import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar";
@@ -31,7 +31,7 @@ import {
 } from "../components/ui/table";
 import { useAuth } from "../hooks/use-auth";
 import { processSessions } from "../lib/session-utils";
-import { type User, sessionTypes, sessionStatuses, type Session } from "../lib/types";
+import { type User, sessionStatuses, type Session } from "../lib/types";
 import { cn } from "../lib/utils";
 import { fetchSessions } from "../api/sessions";
 import { fetchTrainers } from "../api/availability";
@@ -144,8 +144,8 @@ const sessionsToShow = useMemo(() => {
   trainers.find(t => String(t.id) === String(trainerId))?.name || 'Unknown';
 
     const headers = user?.role === 'admin'
-      ? ['Date', 'Time', 'Trainer', 'Batch', 'Session Type', 'Status', 'Notes']
-      : ['Date', 'Time', 'Batch', 'Session Type', 'Status', 'Notes'];
+      ? ['Date', 'Time', 'Trainer', 'Batch', 'Session Name/ Type', 'Status', 'Notes']
+      : ['Date', 'Time', 'Batch', 'Session Name/ Type', 'Status', 'Notes'];
 
     const csvContent = [
       headers.join(','),
@@ -188,6 +188,13 @@ const sessionsToShow = useMemo(() => {
       </AuthenticatedLayout>
     );
   }
+
+
+  // Collect unique Session Name/ Types from sessions
+const availableSessionTypes = Array.from(
+  new Set(processed.map((s) => s.sessionType))
+).filter(Boolean);
+
 
   return (
     <AuthenticatedLayout>
@@ -261,11 +268,12 @@ const sessionsToShow = useMemo(() => {
                     <SelectValue placeholder="Filter by Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    {sessionTypes.map(type => (
-                      <SelectItem key={type} value={type}>{type}</SelectItem>
-                    ))}
-                  </SelectContent>
+  <SelectItem value="all">All Types</SelectItem>
+  {availableSessionTypes.map(type => (
+    <SelectItem key={type} value={type}>{type}</SelectItem>
+  ))}
+</SelectContent>
+
                 </Select>
                 <Select value={filteredStatus} onValueChange={setFilteredStatus}>
                   <SelectTrigger className="w-full sm:w-[180px]">
@@ -293,7 +301,7 @@ const sessionsToShow = useMemo(() => {
                     <TableHead className="w-[120px]">Date</TableHead>
                     {user.role === 'admin' && <TableHead>Trainer</TableHead>}
                     <TableHead>Batch</TableHead>
-                    <TableHead>Session Type</TableHead>
+                    <TableHead>Session Name/ Type</TableHead>
                     <TableHead className="text-right">Status</TableHead>
                   </TableRow>
                 </TableHeader>

@@ -1,5 +1,3 @@
-# Updated urls.py
-
 from django.urls import path
 
 from core.auth_token import ObtainAuthTokenByEmail
@@ -22,7 +20,7 @@ urlpatterns = [
     # Authentication endpoints
     path('auth/login/', AuthController.as_view(), name='auth_login'),
     path('auth/token/', ObtainAuthTokenByEmail.as_view(), name='api_token_auth'),
-    path('auth/me/', CurrentUserController.as_view(), name='current_user'),  # NEW ENDPOINT
+    path('auth/me/', CurrentUserController.as_view(), name='current_user'),
 
     # User endpoints
     path('users/', UserListCreateController.as_view(), name='user_list_create'),
