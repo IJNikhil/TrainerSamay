@@ -2,20 +2,19 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+# Base directory and environment loading
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Load environment variables from .env file
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
+# Basic Settings
 SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe-secret-key')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-    if host.strip()
+    host.strip() for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if host.strip()
 ]
 
+# Installed Applications
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -25,12 +24,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'rest_framework.authtoken', 
+    'rest_framework.authtoken',
     'core',
 ]
 
+# Middleware
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware', 
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -40,8 +40,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# URL Configuration
 ROOT_URLCONF = 'trainersamay.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -57,10 +59,12 @@ TEMPLATES = [
     },
 ]
 
+# WSGI
 WSGI_APPLICATION = 'trainersamay.wsgi.application'
 
-# Database configuration
+# --- Database Configuration ---
 DB_ENGINE = os.getenv('DB_ENGINE', 'sqlite3')
+
 if DB_ENGINE == 'mysql':
     DATABASES = {
         'default': {
@@ -83,32 +87,32 @@ else:
         }
     }
 
+# --- Password Validation ---
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# --- Internationalization ---
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
+# --- Static Files ---
 STATIC_URL = 'static/'
+
+# --- Default Auto Field ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# --- CORS settings ---
-CORS_ALLOW_ALL_ORIGINS = True 
+# --- CORS Settings ---
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = [
-    "GET",
-    "POST",
-    "PUT",
-    "PATCH",
-    "DELETE",
-    "OPTIONS",
+    "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS",
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -123,24 +127,23 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
 ]
 
-# --- CSRF settings ---
+# --- CSRF Trusted Origins ---
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
     "http://localhost:9002",
 ]
 
-# --- Django User Model ---
+# --- Custom User Model ---
 AUTH_USER_MODEL = 'core.User'
 
-# --- Custom Authentication Backend for email login ---
+# --- Authentication Backends ---
 AUTHENTICATION_BACKENDS = [
     'core.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-
-# --- REST Framework settings ---
+# --- Django REST Framework ---
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',

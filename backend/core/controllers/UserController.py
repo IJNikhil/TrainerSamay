@@ -3,7 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from core.models import User
-from core.serializers import UserSerializer, UserCreateSerializer, ChangePasswordSerializer
+from core.serializers import (
+    UserSerializer,
+    UserCreateSerializer,
+    ChangePasswordSerializer
+)
+
 
 class UserListCreateController(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -20,6 +25,7 @@ class UserListCreateController(generics.ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'success': True, 'id': serializer.data['id']}, status=status.HTTP_201_CREATED)
+
 
 class UserDetailController(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
@@ -38,38 +44,24 @@ class UserDetailController(generics.RetrieveUpdateDestroyAPIView):
         self.perform_update(serializer)
         return Response(serializer.data)
 
+
 class UserPasswordChangeController(APIView):
-
     def patch(self, request, id):
-        print("=== Password Change Attempt ===")
-        print("request.user:", request.user)
-        print("request.user.id:", getattr(request.user, 'id', None))
-        print("request.user.is_staff:", getattr(request.user, 'is_staff', None))
-        print("id param:", id)
-        print("===============================")
-
         try:
             user = User.objects.get(id=id)
         except User.DoesNotExist:
-            print("User not found for id:", id)
             return Response({'detail': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = ChangePasswordSerializer(data=request.data, context={'user': user})
         if serializer.is_valid():
             serializer.save()
-            print("Password updated successfully for user id:", id)
             return Response({'detail': 'Password updated successfully.'}, status=status.HTTP_200_OK)
-        print("Serializer errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
 class CurrentUserController(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
-        """Get current authenticated user"""
-        print("Current user request - User:", request.user)
-        print("Current user ID:", request.user.id)
-        print("Current user role:", request.user.role)
-        
         serializer = UserSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -3,7 +3,6 @@ from core.models import User
 
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
-        # Accept both 'username' and 'email' as the email field
         email = kwargs.get('email') or username
         if email is None or password is None:
             return None

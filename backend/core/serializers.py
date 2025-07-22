@@ -1,11 +1,15 @@
 from rest_framework import serializers
 from .models import User, Session, Availability
 
+
+# --- User Read Serializer (for listing, detail, login responses) ---
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = ['password']
 
+
+# --- User Create/Update Serializer (with password handling) ---
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -33,17 +37,22 @@ class UserCreateSerializer(serializers.ModelSerializer):
             user.save()
         return user
 
+
+# --- Session Serializer ---
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
         fields = '__all__'
 
+
+# --- Availability Serializer ---
 class AvailabilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Availability
         fields = '__all__'
 
 
+# --- Password Change Serializer ---
 class ChangePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField()
     new_password = serializers.CharField()

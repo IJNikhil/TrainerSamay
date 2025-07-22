@@ -13,9 +13,8 @@ interface ThemeSwitcherProps {
   isCollapsed: boolean;
 }
 
-// Util: get system theme
 function getSystemTheme() {
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
     return "dark";
   }
   return "light";
@@ -45,9 +44,7 @@ export function ThemeSwitcher({ isCollapsed }: ThemeSwitcherProps) {
     <>
       <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
       <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className={cn("ml-2", isCollapsed && "hidden")}>
-        Toggle Theme
-      </span>
+      <span className={cn("ml-2", isCollapsed && "hidden")}>Toggle Theme</span>
       <span className="sr-only">Toggle theme</span>
     </>
   );
@@ -58,7 +55,10 @@ export function ThemeSwitcher({ isCollapsed }: ThemeSwitcherProps) {
         <TooltipTrigger asChild>
           <Button
             onClick={toggleTheme}
-            className={cn("w-full justify-start", isCollapsed && "w-10 justify-center px-0")}
+            className={cn(
+              "w-full justify-start",
+              isCollapsed && "w-10 justify-center px-0"
+            )}
             type="button"
           >
             {content}

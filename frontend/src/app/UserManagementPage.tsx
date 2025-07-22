@@ -1,17 +1,37 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
+
 import AuthenticatedLayout from "../components/layouts/authenticated-layout";
-import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "../components/ui/avatar";
 import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+} from "../components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
+
 import { UserDialog } from "../components/users/user-dialog";
 import { useAuth } from "../hooks/use-auth";
 import { useToast } from "../hooks/use-toast";
-import type { User } from "../lib/types";
+
 import { fetchUsers, createUser, updateUser, deleteUser } from "../api/users";
-import { Button } from "../components/ui/button";
-import { Card, CardContent } from "../components/ui/card";
-import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from "../components/ui/table";
+
+import type { User } from "../lib/types";
 
 export default function UserManagement() {
   const { user, loading } = useAuth();
@@ -23,17 +43,18 @@ export default function UserManagement() {
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (!loading && user?.role === 'admin') {
-      fetchUsers().then(setUsers).catch(() => {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to fetch users.",
-        });
-      });
-    }
-    if (!loading && user?.role !== 'admin') {
-      navigate('/');
+    if (!loading && user?.role === "admin") {
+      fetchUsers()
+        .then(setUsers)
+        .catch(() =>
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to fetch users.",
+          })
+        );
+    } else if (!loading && user?.role !== "admin") {
+      navigate("/");
     }
   }, [user, loading, navigate, toast]);
 
@@ -47,43 +68,45 @@ export default function UserManagement() {
     setIsDialogOpen(true);
   };
 
-const handleSaveUser = async (userToSave: any) => {
-  try {
-    const isNewUser = !users.some(u => u.id === userToSave.id);
-    if (isNewUser) {
-      if (!userToSave.password || userToSave.password.length < 6) {
+  const handleSaveUser = async (userToSave: Partial<User> & { id?: string }) => {
+    try {
+      const isNewUser = !userToSave.id;
+
+      if (isNewUser) {
+        if (!userToSave.password || userToSave.password.length < 6) {
+          toast({
+            variant: "destructive",
+            title: "Invalid Password",
+            description: "Password should be at least 6 characters long.",
+          });
+          return;
+        }
+        await createUser(userToSave);
         toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Password is required and must be at least 6 characters.",
+          title: "User Created",
+          description: `Successfully created ${userToSave.name}.`,
         });
-        return;
+      } else {
+        const updatePayload = { ...userToSave };
+        if (!updatePayload.password) delete updatePayload.password;
+
+        await updateUser(userToSave.id!, updatePayload);
+        toast({
+          title: "User Updated",
+          description: `Updated ${userToSave.name}'s details.`,
+        });
       }
-      await createUser(userToSave);
+
+      const refreshedUsers = await fetchUsers();
+      setUsers(refreshedUsers);
+    } catch {
       toast({
-        title: "User Created",
-        description: `Successfully created user ${userToSave.name}.`,
-      });
-    } else {
-      const updatePayload = { ...userToSave };
-      if (!updatePayload.password) delete updatePayload.password;
-      await updateUser(userToSave.id, updatePayload);
-      toast({
-        title: "User Updated",
-        description: `Successfully updated user ${userToSave.name}.`,
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to save user.",
       });
     }
-    setUsers(await fetchUsers());
-  } catch (err) {
-    toast({
-      variant: "destructive",
-      title: "Error",
-      description: "Failed to save user.",
-    });
-  }
-};
-
-
+  };
 
   const handleDeleteUser = async (userId: string) => {
     try {
@@ -91,10 +114,12 @@ const handleSaveUser = async (userToSave: any) => {
       toast({
         variant: "destructive",
         title: "User Deleted",
-        description: `User has been removed from the system.`,
+        description: "User has been removed.",
       });
-      setUsers(await fetchUsers());
-    } catch (err) {
+
+      const refreshedUsers = await fetchUsers();
+      setUsers(refreshedUsers);
+    } catch {
       toast({
         variant: "destructive",
         title: "Error",
@@ -103,7 +128,7 @@ const handleSaveUser = async (userToSave: any) => {
     }
   };
 
-  if (loading || user?.role !== 'admin') {
+  if (loading || user?.role !== "admin") {
     return (
       <AuthenticatedLayout>
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -116,11 +141,11 @@ const handleSaveUser = async (userToSave: any) => {
   return (
     <AuthenticatedLayout>
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-        <div className="flex items-center justify-between space-y-2">
+        <div className="flex items-center justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight">User Management</h2>
             <p className="text-muted-foreground">
-              Add, edit, or deactivate users. All actions are securely logged.
+              Add, edit, or manage user accounts.
             </p>
           </div>
           <Button onClick={handleAddNewClick}>
@@ -128,6 +153,7 @@ const handleSaveUser = async (userToSave: any) => {
             New User
           </Button>
         </div>
+
         <Card>
           <CardContent className="p-0">
             <div className="w-full overflow-auto">
@@ -147,27 +173,39 @@ const handleSaveUser = async (userToSave: any) => {
                       <TableRow key={u.id}>
                         <TableCell>
                           <Avatar>
-                            <AvatarImage src={u.avatar} alt={u.name} data-ai-hint="person avatar" />
+                            <AvatarImage src={u.avatar} alt={u.name} />
                             <AvatarFallback>{u.name.charAt(0)}</AvatarFallback>
                           </Avatar>
                         </TableCell>
                         <TableCell className="font-medium">{u.name}</TableCell>
                         <TableCell className="text-muted-foreground">{u.email}</TableCell>
                         <TableCell>
-                          <Badge variant={u.role === 'admin' ? 'destructive' : 'secondary'} className="capitalize">
+                          <Badge
+                            variant={u.role === "admin" ? "destructive" : "secondary"}
+                            className="capitalize"
+                          >
                             {u.role}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                          {u.id !== user.id && (
-                            <Button variant="ghost" size="sm" onClick={() => handleEditClick(u)}>Edit</Button>
+                          {u.id !== user?.id && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditClick(u)}
+                            >
+                              Edit
+                            </Button>
                           )}
                         </TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                      <TableCell
+                        colSpan={5}
+                        className="text-center text-muted-foreground h-24"
+                      >
                         No users found.
                       </TableCell>
                     </TableRow>
@@ -178,6 +216,7 @@ const handleSaveUser = async (userToSave: any) => {
           </CardContent>
         </Card>
       </div>
+
       <UserDialog
         isOpen={isDialogOpen}
         setIsOpen={setIsDialogOpen}

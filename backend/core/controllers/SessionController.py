@@ -2,6 +2,7 @@ from rest_framework import generics
 from core.models import Session
 from core.serializers import SessionSerializer
 
+
 class SessionListCreateController(generics.ListCreateAPIView):
     serializer_class = SessionSerializer
 
@@ -12,16 +13,16 @@ class SessionListCreateController(generics.ListCreateAPIView):
         return Session.objects.all()
 
     def perform_create(self, serializer):
-        session = serializer.save()
+        serializer.save()
 
-class SessionDetailController(generics.RetrieveUpdateAPIView):
+
+class SessionDetailController(generics.RetrieveUpdateDestroyAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
     lookup_field = 'id'
 
     def perform_update(self, serializer):
-        session = serializer.save()
+        serializer.save()
 
     def perform_destroy(self, instance):
-        trainer_id = instance.trainer_id
-        super().perform_destroy(instance)
+        instance.delete()

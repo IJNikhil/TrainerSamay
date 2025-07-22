@@ -3,13 +3,15 @@ import type { User } from "../lib/types";
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 function getAuthToken(): string | null {
-  return localStorage.getItem('authToken');
+  return localStorage.getItem("authToken");
 }
+
 function getCookie(name: string): string | undefined {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()!.split(';').shift();
+  if (parts.length === 2) return parts.pop()!.split(";").shift();
 }
+
 function getHeaders(): HeadersInit {
   const headers: HeadersInit = { "Content-Type": "application/json" };
   const token = getAuthToken();
@@ -20,9 +22,9 @@ function getHeaders(): HeadersInit {
 }
 
 export async function fetchUsers(): Promise<User[]> {
-  const res = await fetch(`${API_BASE}/users/`, { 
+  const res = await fetch(`${API_BASE}/users/`, {
     headers: getHeaders(),
-    credentials: "include" 
+    credentials: "include"
   });
   if (!res.ok) throw new Error("Failed to fetch users");
   return await res.json();
@@ -35,7 +37,7 @@ export async function createUser(
     method: "POST",
     headers: getHeaders(),
     credentials: "include",
-    body: JSON.stringify(user),
+    body: JSON.stringify(user)
   });
   if (!res.ok) throw new Error("Failed to create user");
   return await res.json();
@@ -49,7 +51,7 @@ export async function updateUser(
     method: "PATCH",
     headers: getHeaders(),
     credentials: "include",
-    body: JSON.stringify(user),
+    body: JSON.stringify(user)
   });
   if (!res.ok) throw new Error("Failed to update user");
   return await res.json();
@@ -59,7 +61,7 @@ export async function deleteUser(userId: string): Promise<void> {
   const res = await fetch(`${API_BASE}/users/${userId}/`, {
     method: "DELETE",
     headers: getHeaders(),
-    credentials: "include",
+    credentials: "include"
   });
   if (!res.ok) throw new Error("Failed to delete user");
 }
@@ -75,8 +77,8 @@ export async function changePassword(
     body: JSON.stringify({
       current_password: data.currentPassword,
       new_password: data.newPassword,
-      confirm_password: data.newPassword,
-    }),
+      confirm_password: data.newPassword
+    })
   });
   if (!res.ok) {
     const err = await res.json();

@@ -1,7 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Users, Calendar, BarChart3, CheckCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Users, Calendar, BarChart3, CheckCircle } from "lucide-react";
 
 interface StatsCardsProps {
   totalTrainers: number;
@@ -10,7 +10,12 @@ interface StatsCardsProps {
   totalCompleted: number;
 }
 
-export default function StatsCards({ totalTrainers, totalSessions, attendanceRate, totalCompleted }: StatsCardsProps) {
+export default function StatsCards({
+  totalTrainers,
+  totalSessions,
+  attendanceRate,
+  totalCompleted,
+}: StatsCardsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
@@ -23,6 +28,7 @@ export default function StatsCards({ totalTrainers, totalSessions, attendanceRat
           <p className="text-xs text-muted-foreground">Currently active</p>
         </CardContent>
       </Card>
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Sessions</CardTitle>
@@ -33,6 +39,7 @@ export default function StatsCards({ totalTrainers, totalSessions, attendanceRat
           <p className="text-xs text-muted-foreground">In system history</p>
         </CardContent>
       </Card>
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Attendance Rate</CardTitle>
@@ -43,6 +50,7 @@ export default function StatsCards({ totalTrainers, totalSessions, attendanceRat
           <p className="text-xs text-muted-foreground">Based on completed sessions</p>
         </CardContent>
       </Card>
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Completed Sessions</CardTitle>

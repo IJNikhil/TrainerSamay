@@ -1,6 +1,8 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
-import type { User } from '../../lib/types';
-import { useNavigate } from 'react-router-dom';
+"use client";
+
+import React, { createContext, useState, useEffect, useCallback } from "react";
+import type { User } from "../../lib/types";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   user: User | null;
@@ -19,13 +21,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const storedUser = localStorage.getItem('trainersamay-user');
+      const storedUser = localStorage.getItem("trainersamay-user");
       if (storedUser) {
         setUser(JSON.parse(storedUser));
       }
-    } catch (error) {
-      console.error("Failed to parse user from localStorage", error);
-      localStorage.removeItem('trainersamay-user');
+    } catch {
+      localStorage.removeItem("trainersamay-user");
     } finally {
       setLoading(false);
     }
@@ -33,20 +34,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = useCallback((user: User) => {
     setUser(user);
-    localStorage.setItem('trainersamay-user', JSON.stringify(user));
+    localStorage.setItem("trainersamay-user", JSON.stringify(user));
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem('trainersamay-user');
-    navigate('/login');
+    localStorage.removeItem("trainersamay-user");
+    navigate("/login");
   }, [navigate]);
-  
+
   const updateUser = useCallback((data: Partial<User>) => {
-    setUser(prevUser => {
-      if (!prevUser) return null;
-      const newUser = { ...prevUser, ...data };
-      localStorage.setItem('trainersamay-user', JSON.stringify(newUser));
+    setUser((prev) => {
+      if (!prev) return null;
+      const newUser = { ...prev, ...data };
+      localStorage.setItem("trainersamay-user", JSON.stringify(newUser));
       return newUser;
     });
   }, []);

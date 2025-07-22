@@ -1,8 +1,14 @@
 "use client";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Label } from '../ui/label';
-import type { User } from '../../lib/types';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Label } from "../ui/label";
+import type { User } from "../../lib/types";
 
 interface TrainerFilterProps {
   trainers: User[];
@@ -10,7 +16,11 @@ interface TrainerFilterProps {
   onTrainerChange: (trainerId: string) => void;
 }
 
-export default function TrainerFilter({ trainers, selectedTrainerId, onTrainerChange }: TrainerFilterProps) {
+export default function TrainerFilter({
+  trainers,
+  selectedTrainerId,
+  onTrainerChange,
+}: TrainerFilterProps) {
   return (
     <div className="flex items-center space-x-2">
       <Label htmlFor="trainer-filter">Filter by Trainer:</Label>
@@ -20,7 +30,7 @@ export default function TrainerFilter({ trainers, selectedTrainerId, onTrainerCh
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All Trainers</SelectItem>
-          {trainers.map(trainer => (
+          {trainers.map((trainer) => (
             <SelectItem key={trainer.id} value={trainer.id}>
               {trainer.name}
             </SelectItem>

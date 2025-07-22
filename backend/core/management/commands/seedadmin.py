@@ -6,20 +6,26 @@ class Command(BaseCommand):
     help = 'Seed a default admin user if not exists'
 
     def handle(self, *args, **kwargs):
-        if not User.objects.filter(role='admin').exists():
-            user = User(
+        admin_user = User.objects.filter(role='admin').first()
+
+        if not admin_user:
+            admin_user = User(
                 name='Admin',
                 email='admin@test.com',
                 role='admin',
-                avatar='https://images.unsplash.com/photo-1750535135451-7c20e24b60c1?auto=format&fit=facearea&w=256&h=256&q=80',
+                avatar='https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png',
                 is_staff=True,
                 is_superuser=True,
             )
-            user.set_password('password')
-            user.save()
-            token, created = Token.objects.get_or_create(user=user)
+            admin_user.set_password('password')
+            admin_user.save()
+            created = True
+        else:
+            created = False
+
+        token, _ = Token.objects.get_or_create(user=admin_user)
+
+        if created:
             self.stdout.write(self.style.SUCCESS(f'Default admin user created. Token: {token.key}'))
         else:
-            user = User.objects.filter(role='admin').first()
-            token, created = Token.objects.get_or_create(user=user)
             self.stdout.write(self.style.WARNING(f'Admin user already exists. Token: {token.key}'))

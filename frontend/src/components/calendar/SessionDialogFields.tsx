@@ -1,5 +1,3 @@
-// src/components/calendar/SessionDialogFields.tsx
-
 import {
   FormField,
   FormItem,
@@ -27,7 +25,6 @@ import {
 } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import {
-  // sessionTypes,
   sessionStatuses,
   type Session,
   type Availability,
@@ -55,7 +52,6 @@ export default function SessionDialogFields({
 }: Props) {
   return (
     <div className="py-4 space-y-6 max-h-[60vh] overflow-y-auto px-2 -mx-2">
-      {/* Scheduling Conflict Alert */}
       {conflict && (
         <Alert className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 flex items-start gap-2 p-3 rounded-lg">
           <AlertTriangle className="h-4 w-4 mt-0.5" />
@@ -63,19 +59,12 @@ export default function SessionDialogFields({
             <AlertTitle>Scheduling Conflict</AlertTitle>
             <AlertDescription>
               {getConflictingTrainerName()} already has a {conflict.sessionType} session for {conflict.batch} scheduled at{" "}
-              {format(
-                conflict.date instanceof Date
-                  ? conflict.date
-                  : new Date(conflict.date),
-                "p"
-              )}
-              .
+              {format(conflict.date instanceof Date ? conflict.date : new Date(conflict.date), "p")}.
             </AlertDescription>
           </div>
         </Alert>
       )}
 
-      {/* Availability Info */}
       {availability && !conflict && (
         <div className="flex items-start text-sm p-3 rounded-lg bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300">
           <CheckCircle className="h-5 w-5 mr-3 flex-shrink-0 mt-0.5" />
@@ -85,7 +74,6 @@ export default function SessionDialogFields({
         </div>
       )}
 
-      {/* Warning if no availability */}
       {!availability && !conflict && (
         <div className="flex items-start text-sm p-3 rounded-lg bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300">
           <AlertTriangle className="h-5 w-5 mr-3 flex-shrink-0 mt-0.5" />
@@ -95,7 +83,6 @@ export default function SessionDialogFields({
         </div>
       )}
 
-      {/* Batch */}
       <FormField
         control={form.control}
         name="batch"
@@ -112,7 +99,6 @@ export default function SessionDialogFields({
 
       <Separator />
 
-      {/* Date & Time */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField
           control={form.control}
@@ -127,9 +113,7 @@ export default function SessionDialogFields({
                       className="w-full pl-3 text-left font-normal bg-white dark:bg-gray-900 border rounded h-10 flex items-center"
                       type="button"
                     >
-                      {field.value
-                        ? format(field.value, "PPP")
-                        : <span>Pick a date</span>}
+                      {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </button>
                   </FormControl>
@@ -162,58 +146,20 @@ export default function SessionDialogFields({
         />
       </div>
 
-
-
-
-
-
-
-
-      {/* Session Name/ Type & Duration */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* <FormField
+        <FormField
           control={form.control}
           name="sessionType"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Session Name/ Type</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                value={field.value}
-                defaultValue={field.value}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {sessionTypes.map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Input placeholder="Enter Session Name/ Type" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
-
-        <FormField
-  control={form.control}
-  name="sessionType"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Session Name/ Type</FormLabel>
-      <FormControl>
-        <Input placeholder="Enter Session Name/ Type/name" {...field} />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
+        />
         <FormField
           control={form.control}
           name="duration"
@@ -229,16 +175,6 @@ export default function SessionDialogFields({
         />
       </div>
 
-
-
-
-
-
-
-
-
-
-      {/* Recurring Session (only for new sessions) */}
       {!session && (
         <>
           <Separator />
@@ -249,18 +185,13 @@ export default function SessionDialogFields({
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
-                    <FormLabel className="text-base">
-                      Weekly Recurring Session 
-                    </FormLabel>
-                    <span className="text-xs text-muted-foreground" style={{ paddingLeft: '0.5rem' }}>
-                       Schedule this session for multiple weeks.
+                    <FormLabel className="text-base">Weekly Recurring Session</FormLabel>
+                    <span className="text-xs text-muted-foreground pl-2">
+                      Schedule this session for multiple weeks.
                     </span>
                   </div>
                   <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                 </FormItem>
               )}
@@ -284,17 +215,8 @@ export default function SessionDialogFields({
         </>
       )}
 
-
-
-
-
-
-
-
-
       <Separator />
 
-      {/* Status */}
       <FormField
         control={form.control}
         name="status"
@@ -324,7 +246,6 @@ export default function SessionDialogFields({
         )}
       />
 
-      {/* Location */}
       <FormField
         control={form.control}
         name="location"

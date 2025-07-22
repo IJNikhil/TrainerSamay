@@ -1,27 +1,19 @@
-import type { Session } from "../lib/types";
+import type { Session, SessionPayload } from "../lib/types";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
-type SessionPayload = {
-  trainerId: string;
-  batch: string;
-  sessionType: string;
-  date: string;
-  duration: number;
-  location: string;
-  notes?: string;
-  status: string;
-};
+
+
 type SessionUpdatePayload = Partial<SessionPayload>;
 
 function getAuthToken(): string | null {
-  return localStorage.getItem('authToken');
+  return localStorage.getItem("authToken");
 }
 
 function getCookie(name: string): string | undefined {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()!.split(';').shift();
+  if (parts.length === 2) return parts.pop()!.split(";").shift();
 }
 
 function getHeaders(): HeadersInit {
@@ -37,17 +29,15 @@ function toBackendPayload(data: SessionPayload | SessionUpdatePayload) {
   const { trainerId, ...rest } = data;
   return {
     ...rest,
-    ...(trainerId !== undefined ? { trainer: trainerId } : {}),
+    ...(trainerId !== undefined ? { trainer: trainerId } : {})
   };
 }
 
 export async function fetchSessions(trainerId?: string): Promise<Session[]> {
-  const url = trainerId
-    ? `${API_BASE}/sessions/?trainer=${trainerId}`
-    : `${API_BASE}/sessions/`;
-  const res = await fetch(url, { 
+  const url = trainerId ? `${API_BASE}/sessions/?trainer=${trainerId}` : `${API_BASE}/sessions/`;
+  const res = await fetch(url, {
     headers: getHeaders(),
-    credentials: "include" 
+    credentials: "include"
   });
   if (!res.ok) {
     let errorMsg = "Failed to fetch sessions";
@@ -62,7 +52,7 @@ export async function fetchSessions(trainerId?: string): Promise<Session[]> {
   return data.map((s: any) => ({
     ...s,
     trainerId: String(s.trainer ?? s.trainerId),
-    date: new Date(s.date),
+    date: new Date(s.date)
   }));
 }
 
@@ -72,7 +62,7 @@ export async function createSession(data: SessionPayload): Promise<Session> {
     method: "POST",
     headers: getHeaders(),
     credentials: "include",
-    body: JSON.stringify(backendData),
+    body: JSON.stringify(backendData)
   });
   if (!res.ok) {
     let errorMsg = "Failed to create session";
@@ -83,14 +73,13 @@ export async function createSession(data: SessionPayload): Promise<Session> {
       const error = await res.text();
       if (error) errorMsg = error;
     }
-    console.error("Backend error:", errorMsg);
     throw new Error(errorMsg);
   }
   const result = await res.json();
   return {
     ...result,
     trainerId: String(result.trainer ?? result.trainerId),
-    date: new Date(result.date),
+    date: new Date(result.date)
   };
 }
 
@@ -99,8 +88,6 @@ export async function updateSessionApi(
   data: SessionUpdatePayload
 ): Promise<Session> {
   let backendData = { ...data };
-
-  // --- Auto-mark as Absent if scheduled time + waiting period is past and not started ---
   if (
     backendData.status === "Scheduled" &&
     backendData.date &&
@@ -108,13 +95,9 @@ export async function updateSessionApi(
   ) {
     const scheduledDate = new Date(backendData.date);
     const duration = Number(backendData.duration);
-
-    // Calculate waiting time (in minutes)
     let waitingMinutes = duration <= 60 ? duration * 0.5 : 30;
-    // Calculate the cutoff time
     const cutoffTime = new Date(scheduledDate.getTime() + waitingMinutes * 60000);
     const now = new Date();
-
     if (now > cutoffTime) {
       backendData.status = "Absent";
     }
@@ -126,8 +109,9 @@ export async function updateSessionApi(
     method: "PATCH",
     headers: getHeaders(),
     credentials: "include",
-    body: JSON.stringify(backendData),
+    body: JSON.stringify(backendData)
   });
+
   if (!res.ok) {
     let errorMsg = "Failed to update session";
     try {
@@ -137,14 +121,14 @@ export async function updateSessionApi(
       const error = await res.text();
       if (error) errorMsg = error;
     }
-    console.error("Backend error:", errorMsg);
     throw new Error(errorMsg);
   }
+
   const result = await res.json();
   return {
     ...result,
     trainerId: String(result.trainer ?? result.trainerId),
-    date: new Date(result.date),
+    date: new Date(result.date)
   };
 }
 
@@ -152,8 +136,9 @@ export async function deleteSession(sessionId: string): Promise<void> {
   const res = await fetch(`${API_BASE}/sessions/${sessionId}/`, {
     method: "DELETE",
     headers: getHeaders(),
-    credentials: "include",
+    credentials: "include"
   });
+
   if (!res.ok) {
     let errorMsg = "Failed to delete session";
     try {

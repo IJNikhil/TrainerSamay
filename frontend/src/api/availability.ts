@@ -1,16 +1,17 @@
-
 import type { Availability, User } from "../lib/types";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 function getAuthToken(): string | null {
-  return localStorage.getItem('authToken');
+  return localStorage.getItem("authToken");
 }
+
 function getCookie(name: string): string | undefined {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()!.split(';').shift();
+  if (parts.length === 2) return parts.pop()!.split(";").shift();
 }
+
 function getHeaders(): HeadersInit {
   const headers: HeadersInit = { "Content-Type": "application/json" };
   const token = getAuthToken();
@@ -23,7 +24,7 @@ function getHeaders(): HeadersInit {
 export async function fetchAvailabilities(): Promise<Availability[]> {
   const res = await fetch(`${API_BASE}/availabilities/`, {
     headers: getHeaders(),
-    credentials: "include"
+    credentials: "include",
   });
   if (!res.ok) throw new Error("Failed to fetch availabilities");
   const data = await res.json();
@@ -36,7 +37,7 @@ export async function fetchAvailabilities(): Promise<Availability[]> {
 export async function fetchTrainers(): Promise<User[]> {
   const res = await fetch(`${API_BASE}/availabilities/trainers/`, {
     headers: getHeaders(),
-    credentials: "include"
+    credentials: "include",
   });
   if (!res.ok) throw new Error("Failed to fetch trainers");
   return await res.json();
@@ -45,7 +46,7 @@ export async function fetchTrainers(): Promise<User[]> {
 export async function fetchTrainerAvailabilities(trainerId: string): Promise<Availability[]> {
   const res = await fetch(`${API_BASE}/availabilities/${trainerId}/`, {
     headers: getHeaders(),
-    credentials: "include"
+    credentials: "include",
   });
   if (!res.ok) throw new Error("Failed to fetch trainer availabilities");
   const data = await res.json();

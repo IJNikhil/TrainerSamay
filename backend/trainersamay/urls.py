@@ -3,5 +3,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('core.urls')),  # All core.urls endpoints are under /api/
+    path('api/', include('core.urls')),
 ]

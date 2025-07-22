@@ -13,7 +13,7 @@ import {
 } from "../ui/dialog";
 import { Form } from "../ui/form";
 import { Badge } from "../ui/badge";
-import { sessionStatuses } from "../../lib/types";
+import { daysOfWeek, sessionStatuses } from "../../lib/types";
 import type { Session, DayOfWeek, User, Availability } from "../../lib/types";
 import { cn } from "../../lib/utils";
 import { createSession, updateSessionApi } from "../../api/sessions";
@@ -73,6 +73,7 @@ export function SessionDialog({
       })),
     [availabilities]
   );
+
   const normalizedSessions = useMemo(
     () =>
       sessions.map((s) => ({
@@ -101,28 +102,34 @@ export function SessionDialog({
 
   const availability = useMemo(() => {
     if (!selectedTrainerId || !selectedDate) return null;
-    const dayOfWeek = format(selectedDate, "eeee") as DayOfWeek;
+    // const dayOfWeek = format(selectedDate, "eeee") as DayOfWeek;
+    const dayOfWeek: DayOfWeek = daysOfWeek[selectedDate.getDay()];
     return (
-      normalizedAvailabilities.find(
-        (a: Availability) =>
-          String(a.trainerId) === String(selectedTrainerId) && a.day === dayOfWeek
-      ) ?? null
+    normalizedAvailabilities.find(
+      (a) =>
+        String(a.trainerId) === String(selectedTrainerId) &&
+        a.day === dayOfWeek
+    ) ?? null
     );
   }, [selectedTrainerId, selectedDate, normalizedAvailabilities]);
 
   const conflict = useMemo(() => {
     if (!selectedTrainerId || !selectedDate || !selectedTime || !selectedDuration) return null;
+
     const [hours, minutes] = selectedTime.split(":").map(Number);
-    const proposedStartTime = new Date(selectedDate);
-    proposedStartTime.setHours(hours, minutes, 0, 0);
-    const proposedEndTime = new Date(proposedStartTime.getTime() + selectedDuration * 60000);
+    const proposedStart = new Date(selectedDate);
+    proposedStart.setHours(hours, minutes, 0, 0);
+    const proposedEnd = new Date(proposedStart.getTime() + selectedDuration * 60000);
+
     return (
       normalizedSessions.find((s) => {
         if (String(s.trainerId) !== String(selectedTrainerId)) return false;
         if (session && s.id === session.id) return false;
-        const existingStartTime = s.date instanceof Date ? s.date : new Date(s.date);
-        const existingEndTime = new Date(existingStartTime.getTime() + s.duration * 60000);
-        return proposedStartTime < existingEndTime && proposedEndTime > existingStartTime;
+
+        const existingStart = s.date instanceof Date ? s.date : new Date(s.date);
+        const existingEnd = new Date(existingStart.getTime() + s.duration * 60000);
+
+        return proposedStart < existingEnd && proposedEnd > existingStart;
       }) ?? null
     );
   }, [
@@ -136,15 +143,14 @@ export function SessionDialog({
 
   const getConflictingTrainerName = () => {
     if (!conflict) return "";
-    const trainer = trainers.find((t: User) => String(t.id) === String(conflict.trainerId));
+    const trainer = trainers.find((t) => String(t.id) === String(conflict.trainerId));
     return trainer?.name || "Unknown";
   };
 
   useEffect(() => {
     if (isOpen) {
       if (session) {
-        const sessionDate: Date =
-          session.date instanceof Date ? session.date : new Date(session.date);
+        const sessionDate = session.date instanceof Date ? session.date : new Date(session.date);
         form.reset({
           trainerId: String(session.trainerId),
           batch: session.batch,
@@ -165,11 +171,7 @@ export function SessionDialog({
           time: "09:00",
           sessionType: "",
           trainerId:
-            currentTrainer
-              ? String(currentTrainer.id)
-              : trainers.length > 0
-              ? String(trainers[0].id)
-              : "",
+            currentTrainer?.id?.toString() || (trainers[0]?.id?.toString() ?? ""),
           location: "Main Gym",
           notes: "",
           status: "Scheduled",
@@ -187,14 +189,15 @@ export function SessionDialog({
     setIsSubmitting(true);
     try {
       const [hours, minutes] = values.time.split(":").map(Number);
+
       if (session) {
-        const combinedDate = new Date(values.date);
-        combinedDate.setHours(hours, minutes, 0, 0);
+        const sessionDate = new Date(values.date);
+        sessionDate.setHours(hours, minutes, 0, 0);
         await updateSessionApi(session.id, {
           trainerId: String(values.trainerId),
           batch: values.batch,
           sessionType: values.sessionType,
-          date: combinedDate.toISOString(),
+          date: sessionDate.toISOString(),
           duration: values.duration,
           location: values.location,
           notes: values.notes,
@@ -205,7 +208,7 @@ export function SessionDialog({
           trainerId: String(values.trainerId),
           batch: values.batch,
           sessionType: values.sessionType,
-          date: combinedDate,
+          date: sessionDate,
           duration: values.duration,
           location: values.location,
           notes: values.notes,
@@ -213,9 +216,9 @@ export function SessionDialog({
         };
         onSessionSave([updatedSession]);
       } else {
-        const createdSessions: Session[] = [];
-        const occurrences = values.isRecurring ? values.recurrenceWeeks || 1 : 1;
-        for (let i = 0; i < occurrences; i++) {
+        const sessionsCreated: Session[] = [];
+        const repeatCount = values.isRecurring ? values.recurrenceWeeks || 1 : 1;
+        for (let i = 0; i < repeatCount; i++) {
           const sessionDate = new Date(values.date);
           sessionDate.setDate(sessionDate.getDate() + i * 7);
           sessionDate.setHours(hours, minutes, 0, 0);
@@ -227,24 +230,23 @@ export function SessionDialog({
             duration: values.duration,
             location: values.location,
             notes: values.notes,
-            status: "Scheduled" as const,
+            status: "Scheduled",
           });
-          createdSessions.push({
+          sessionsCreated.push({
             id: result.id,
             trainerId: result.trainerId,
-            batch: values.batch,
-            sessionType: values.sessionType,
+            batch: result.batch,
+            sessionType: result.sessionType,
             date: new Date(result.date),
-            duration: values.duration,
-            location: values.location,
-            notes: values.notes,
+            duration: result.duration,
+            location: result.location,
+            notes: result.notes,
             status: "Scheduled",
           });
         }
-        onSessionSave(createdSessions);
+        onSessionSave(sessionsCreated);
       }
       setIsOpen(false);
-    } catch (error) {
     } finally {
       setIsSubmitting(false);
     }
@@ -260,9 +262,7 @@ export function SessionDialog({
                 {session ? "Edit Session" : "New Session"}
               </DialogTitle>
               <DialogDescription>
-                {session
-                  ? "Update the details for this session."
-                  : "Schedule a new session for a client."}
+                {session ? "Update the details for this session." : "Schedule a new session for a client."}
               </DialogDescription>
             </div>
             {session && (
