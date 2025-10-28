@@ -1,164 +1,156 @@
-# 🕒 TrainerSamay
+# TrainerSamay
 
 A simple, full-stack **trainer scheduling and management system** built with **Django** and **React + Vite + Tailwind CSS**.  
 Designed for **training centers** to help both **trainers** and **admins** manage schedules, availability, and reports.
 
 ---
 
-## 🎯 Project Objective
+## Project Objective
 
 Training centers often struggle to keep trainers informed of their upcoming sessions in a clear and centralized way.  
-This platform solves the problem with a **calendar-based app** that connects to an SQL database and displays each trainer's class schedule in a clean, intuitive interface.
+This platform solves that problem with a **calendar-based app** that connects to an SQL database and displays each trainer's class schedule in a clean, intuitive interface.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-- **Secure Authentication:** Via tokens and sessions using Django REST Framework
-- **Trainer Login:**
-  - Login via email (from `member` table)
-  - View only the trainer's own sessions
-- **Interactive Dashboard:**
-  - Highlights today's and upcoming sessions
-  - Admins get a complete overview; trainers see their own calendar
-- **Calendar-Based Scheduling:**
-  - Sessions fetched from `trainer_utilization` table
-  - Monthly, weekly, and agenda calendar views
-  - Show course name, time, location on hover or click
-- **Availability Management (Trainer):**
-  - Trainers can update their availability directly
-- **Smart Scheduling (Admin):**
-  - Admin sees all trainers' schedules
-  - Filter sessions by specific trainer
-  - Create/modify/delete any trainer's sessions
-- **Simple Admin Management:**
-  - Add/update/delete trainer and admin users
-- **Auto Absence Detection:**
-  - Sessions not started within a grace period are auto-marked "Absent"
-- **Export Reports:**
-  - Admin and trainers can export filtered session reports to CSV
-- **Polished & Responsive UI:**
-  - Built with ShadCN UI and Tailwind CSS (light & dark modes)
+- **Secure Authentication:** Via tokens and sessions using Django REST Framework  
+- **Trainer Login:**  
+  - Login via email (from `member` table)  
+  - View only the trainer's own sessions  
+- **Interactive Dashboard:**  
+  - Highlights today's and upcoming sessions  
+  - Admins get a complete overview; trainers see their own calendar  
+- **Calendar-Based Scheduling:**  
+  - Sessions fetched from `trainer_utilization` table  
+  - Monthly, weekly, and agenda calendar views  
+  - Display course name, time, and location on hover or click  
+- **Availability Management (Trainer):** Trainers can update their availability directly  
+- **Smart Scheduling (Admin):**  
+  - Admins can view all trainers' schedules  
+  - Filter sessions by trainer  
+  - Create, modify, or delete any session  
+- **Simple Admin Management:** Add, update, or remove trainer and admin users  
+- **Auto Absence Detection:** Automatically marks sessions as "Absent" if not started on time  
+- **Export Reports:** Export filtered session reports to CSV  
+- **Responsive UI:** Built with ShadCN UI and Tailwind CSS, supporting light and dark modes
 
 ---
 
-## 📸 App Screenshots (Laptop/Desktop Views)
+## Application Screenshots
 
-All screenshots below showcase the TrainerSamay App’s interface on laptop/desktop screens, providing a clear view of the user experience on larger devices.
-
----
-
-### 🔐 Authentication
+### Authentication
 
 | Login Page |
-|:----------:|
+|:-----------:|
 | ![Login](screenshots/loginPage.png) |
 | *Secure email-based login for trainers and admins* |
 
 ---
 
-### 🏠 Admin Experience
+### Admin Experience
 
 #### Dashboard Overview
 
 | Admin Dashboard | Reports & Analytics |
-|:---------------:|:------------------:|
+|:----------------:|:-------------------:|
 | ![Admin Dashboard](screenshots/adminDashboard.png) | ![Admin Reports](screenshots/adminReports.png) |
 | *Trainer utilization, session stats, and quick insights* | *Comprehensive session analytics and reporting* |
 
-#### User & Availability Management
+#### User and Availability Management
 
 | User Management | User Creation | Availability |
-|:---------------:|:-------------:|:------------:|
+|:----------------:|:--------------:|:-------------:|
 | ![User Management](screenshots/adminUserManagement.png) | ![User Creation](screenshots/adminUserCreation.png) | ![Admin Availability](screenshots/adminAvailability.png) |
 | *Manage trainer/admin accounts* | *Create new users with role assignment* | *View trainer availability* |
 
-#### Scheduling & Calendar
+#### Scheduling and Calendar
 
 | Calendar View | Agenda View |
-|:-------------:|:-----------:|
+|:---------------:|:-------------:|
 | ![Calendar](screenshots/calendar_view.png) | ![Agenda](screenshots/agendaView.png) |
-| *Monthly/weekly calendar with color-coded sessions* | *Detailed agenda of upcoming sessions* |
+| *Monthly or weekly calendar with color-coded sessions* | *Detailed agenda of upcoming sessions* |
 
 | Session Details | Export Reports |
-|:---------------:|:--------------:|
+|:----------------:|:---------------:|
 | ![Session Details](screenshots/sessionDetails.png) | ![Export](screenshots/adminExportReports.png) |
 | *View and manage session details* | *Export session data and analytics* |
 
 ---
 
-### 👨‍🏫 Trainer Experience
+### Trainer Experience
 
-#### Personal Dashboard & Calendar
+#### Personal Dashboard and Calendar
 
 | Trainer Dashboard | Trainer Calendar |
-|:-----------------:|:----------------:|
+|:------------------:|:----------------:|
 | ![Trainer Dashboard](screenshots/trainerDashboard.png) | ![Trainer Calendar](screenshots/trainerCalendar.png) |
 | *Upcoming sessions at a glance* | *Personalized calendar view* |
 
-#### Session Scheduling & Management
+#### Session Scheduling and Management
 
 | Add Session | Advanced Scheduling | Start Session |
-|:-----------:|:-------------------:|:-------------:|
+|:-------------:|:-------------------:|:--------------:|
 | ![Session Creation](screenshots/creatingNewSession.png) | ![Advanced Session](screenshots/creatingNewSession_two.png) | ![Start Session](screenshots/trainerStartSession.png) |
 | *Add new sessions with conflict detection* | *Advanced scheduling with trainer/time selection* | *Start sessions and track attendance* |
 
-#### Profile & Availability
+#### Profile and Availability
 
 | Trainer Profile | Trainer Availability |
-|:---------------:|:-------------------:|
+|:----------------:|:-------------------:|
 | ![Trainer Profile](screenshots/trainerProfile.png) | ![Trainer Availability](screenshots/trainerAvailability.png) |
-| *Manage profile and preferences* | *Set and update weekly availability* |
+| *Manage personal information and preferences* | *Set and update weekly availability* |
 
 #### Reports
 
 | Trainer Reports | Exported Reports |
-|:---------------:|:----------------:|
+|:----------------:|:----------------:|
 | ![Trainer Reports](screenshots/trainerReport.png) | ![Trainer Exported Reports](screenshots/trainerExportedReports.png) |
 | *View session history and stats* | *Export personal session data* |
 
 ---
-## 🛠️ Tech Stack
+
+## Tech Stack
 
 ### Backend
-- **Django 5.x** - Web framework
-- **Django REST Framework** - API development
-- **MySQL/SQLite** - Database (configurable)
-- **django-cors-headers** - CORS handling
-- **python-dotenv** - Environment variables management
+- **Django 5.x** – Web framework  
+- **Django REST Framework** – API development  
+- **MySQL/SQLite** – Database (configurable)  
+- **django-cors-headers** – CORS handling  
+- **python-dotenv** – Environment variable management  
 
 ### Frontend
-- **React 18** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Build tool and dev server
-- **React Router DOM** - Client-side routing
-- **React Hook Form** - Form management
-- **Zod** - Schema validation
-- **Recharts** - Data visualization
-- **ShadCN UI** - UI components
-- **Tailwind CSS** - Styling
-- **Framer Motion** - Animations
-- **Lucide React** - Icons
+- **React 18** – UI library  
+- **TypeScript** – Type safety  
+- **Vite** – Build tool and dev server  
+- **React Router DOM** – Client-side routing  
+- **React Hook Form** – Form management  
+- **Zod** – Schema validation  
+- **Recharts** – Data visualization  
+- **ShadCN UI** – UI components  
+- **Tailwind CSS** – Styling  
+- **Framer Motion** – Animations  
+- **Lucide React** – Icons  
 
 ---
 
-## 🛠️ Project Structure
+## Project Structure
 
 ```
 trainersamay/
 ├── backend/                     # Django backend
-│   ├── core/                    # Main App Backend
-│   ├── trainersamay/            # Django backend settings
+│   ├── core/                    # Main app backend
+│   ├── trainersamay/            # Django settings
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   └── wsgi.py
 │   ├── .env
 │   ├── manage.py
 │   └── requirements.txt
-├── frontend/                   # React + Vite + Tailwind frontend
+├── frontend/                    # React + Vite + Tailwind frontend
 │   ├── src/
-│   │   ├── api/                # files to connect frontend with backend
-│   │   ├── ..                  # other remaining files
+│   │   ├── api/                 # Files to connect frontend with backend
+│   │   ├── ...                  # Remaining files
 │   ├── .env
 │   ├── package.json
 │   ├── vite.config.ts
@@ -168,16 +160,16 @@ trainersamay/
 
 ---
 
-## ⚡ Quickstart
+## Quickstart
 
-### 1. **Clone the Repository**
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/IJNikhil/TrainerSamay.git
 cd trainersamay
 ```
 
-### 2. **Backend Setup (Django)**
+### 2. Backend Setup (Django)
 
 ```bash
 cd backend
@@ -198,7 +190,7 @@ python manage.py seedadmin    # Creates admin user with default credentials
 python manage.py runserver
 ```
 
-**✅ Sample .env for Backend (Do NOT commit to Git)**
+**Sample `.env` (Backend)**
 
 ```env
 # Database
@@ -220,7 +212,7 @@ CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000,http://localhos
 CORS_ALLOW_CREDENTIALS=True
 ```
 
-### 3. **Frontend Setup (React + Vite)**
+### 3. Frontend Setup (React + Vite)
 
 ```bash
 cd frontend
@@ -228,9 +220,9 @@ npm install
 npm run dev
 ```
 
-Your app will be available at: **http://localhost:5173**
+Your app will be available at **http://localhost:5173**
 
-**✅ Sample .env for Frontend**
+**Sample `.env` (Frontend)**
 
 ```env
 VITE_API_URL=http://localhost:8000/api
@@ -239,12 +231,12 @@ REACT_APP_API_URL=http://localhost:8000/api
 
 ---
 
-## 🏃‍♂️ Auto-Absence Marking
+## Auto-Absence Marking
 
-Sessions are marked "Absent" if not started after a grace period.
+Sessions are automatically marked "Absent" if not started after a grace period.
 
-- **Logic:** `core/management/commands/mark_absent_sessions.py`
-- **Automatic update:** It auto-execute in every 5 minutes to check database
+- **Logic:** `core/management/commands/mark_absent_sessions.py`  
+- **Execution:** Runs every 5 minutes to check the database
 
 ```bash
 python manage.py mark_absent_sessions
@@ -252,53 +244,51 @@ python manage.py mark_absent_sessions
 
 ---
 
-## 🔐 Authentication
+## Authentication
 
-- **Login via email** (custom Django backend)
-- **DRF Token & Session authentication**
-- **Tokens stored in localStorage** for protected API requests
-- **Role-based access control** (admin vs trainer permissions)
+- Login via email (custom Django backend)  
+- DRF Token and Session authentication  
+- Tokens stored in localStorage for secure API access  
+- Role-based access control (admin vs trainer)
 
 ---
 
-## 📊 API Endpoints
+## API Endpoints
 
 ### Authentication
-- `POST /api/auth/login/` - User login
-- `POST /api/auth/logout/` - User logout
-- `POST /api/auth/register/` - User registration (admin only)
+- `POST /api/auth/login/` – User login  
+- `POST /api/auth/logout/` – User logout  
+- `POST /api/auth/register/` – Admin-only registration  
 
 ### User Management
-- `GET /api/users/` - List all users (admin only)
-- `POST /api/users/` - Create new user (admin only)
-- `PUT /api/users/{id}/` - Update user (admin only)
-- `DELETE /api/users/{id}/` - Delete user (admin only)
+- `GET /api/users/` – List all users (admin)  
+- `POST /api/users/` – Create new user (admin)  
+- `PUT /api/users/{id}/` – Update user (admin)  
+- `DELETE /api/users/{id}/` – Delete user (admin)  
 
 ### Sessions
-- `GET /api/sessions/` - List sessions
-- `POST /api/sessions/` - Create new session
-- `PUT /api/sessions/{id}/` - Update session
-- `DELETE /api/sessions/{id}/` - Delete session
+- `GET /api/sessions/` – List sessions  
+- `POST /api/sessions/` – Create new session  
+- `PUT /api/sessions/{id}/` – Update session  
+- `DELETE /api/sessions/{id}/` – Delete session  
 
 ### Availability
-- `GET /api/availability/` - Get trainer availability
-- `POST /api/availability/` - Set trainer availability
-- `PUT /api/availability/{id}/` - Update availability
+- `GET /api/availability/` – Get trainer availability  
+- `POST /api/availability/` – Set trainer availability  
+- `PUT /api/availability/{id}/` – Update availability  
 
 ---
 
-## 📦 Installation Commands
+## Installation Commands
 
-**✅ Backend Requirements**
-
+### Backend Requirements
 ```bash
 pip install django djangorestframework python-dotenv django-cors-headers mysqlclient
 ```
 
-*If you're using SQLite for local dev, you don't need `mysqlclient`.*
+*If using SQLite for local development, `mysqlclient` is not required.*
 
-**✅ Frontend Requirements (via npm)**
-
+### Frontend Requirements
 ```bash
 npm install react react-dom react-router-dom vite typescript tailwindcss \
   @radix-ui/react-accordion @radix-ui/react-alert-dialog @radix-ui/react-avatar \
@@ -310,17 +300,17 @@ npm install react react-dom react-router-dom vite typescript tailwindcss \
 
 ---
 
-## 🧑‍💻 Developer Notes
+## Developer Notes
 
-- **Admin Panel:** http://localhost:8000/admin
-- **Timezone:** Asia/Kolkata
-- **Custom User Model:** `core.User`
-- **Custom Auth Backend:** `core.backends.EmailBackend`
+- **Admin Panel:** http://localhost:8000/admin  
+- **Timezone:** Asia/Kolkata  
+- **Custom User Model:** `core.User`  
+- **Custom Auth Backend:** `core.backends.EmailBackend`  
 - **Database Tables:** `member`, `trainer_utilization`
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 ### Backend Deployment
 
@@ -330,14 +320,11 @@ npm install react react-dom react-router-dom vite typescript tailwindcss \
    ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
    SECRET_KEY=your-production-secret-key
    DB_ENGINE=mysql
-   # Add production database credentials
    ```
-
 2. **Collect Static Files**
    ```bash
    python manage.py collectstatic
    ```
-
 3. **Run Production Server**
    ```bash
    gunicorn trainersamay.wsgi:application
@@ -349,83 +336,71 @@ npm install react react-dom react-router-dom vite typescript tailwindcss \
    ```bash
    npm run build
    ```
-
-2. **Deploy to hosting service** (Netlify, Vercel, etc.)
+2. **Deploy** to Netlify, Vercel, or another hosting provider.
 
 ---
 
-## 🧪 Development
+## Development
 
-### Backend Development
+### Backend
 ```bash
-# Run tests
 python manage.py test
-
-# Create new migrations
 python manage.py makemigrations
-
-# Apply migrations
 python manage.py migrate
-
-# Create superuser
 python manage.py createsuperuser
 ```
 
-### Frontend Development
+### Frontend
 ```bash
-# Run development server
 npm run dev
-
-# Build for production
 npm run build
-
 ```
 
 ---
 
-## 🙋 FAQ
+## FAQ
 
-**Q: Why aren't absences marked automatically?**  
-A: You need to run `python manage.py mark_absent_sessions` periodically via cron or manually every 5 minutes.
+**Q:** Why aren't absences marked automatically?  
+**A:** Run `python manage.py mark_absent_sessions` periodically via cron or scheduler.
 
-**Q: How do I add more roles?**  
-A: Extend `core.User` and update permission logic using DRF.
+**Q:** How do I add more roles?  
+**A:** Extend `core.User` and update permission logic using DRF.
 
-**Q: How do I deploy it?**  
-A: Use Gunicorn + Nginx for Django and deploy React frontend on Vercel, Netlify, or static hosting. Configure your `.env` accordingly.
+**Q:** How do I deploy it?  
+**A:** Use Gunicorn + Nginx for Django and deploy React frontend on Netlify or Vercel.
 
-**Q: Can I use SQLite instead of MySQL?**  
-A: Yes, set `DB_ENGINE=sqlite3` in your `.env` file for local development.
+**Q:** Can I use SQLite instead of MySQL?  
+**A:** Yes, set `DB_ENGINE=sqlite3` in your `.env`.
 
-**Q: How do I reset the database?**  
-A: Delete migrations, run `python manage.py makemigrations` and `python manage.py migrate` again.
+**Q:** How do I reset the database?  
+**A:** Delete migrations, then run `makemigrations` and `migrate`.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+1. Fork the repository  
+2. Create a new branch (`git checkout -b feature/your-feature`)  
+3. Commit your changes (`git commit -m "Add your feature"`)  
+4. Push the branch (`git push origin feature/your-feature`)  
 5. Open a Pull Request
 
 ---
 
-## 📄 License
+## License
 
-MIT License – Free to use, modify, and distribute.
-
----
-
-## 🆘 Support
-
-For support, please create an issue in the repository or contact the development team.
+**MIT License** – Free to use, modify, and distribute.
 
 ---
 
-## 📞 Contact
+## Support
 
-- **Project Repository:** [https://github.com/IJNikhil/TrainerSamay](https://github.com/IJNikhil/TrainerSamay)
-- **Developer:** IJNikhil
+For help, please create an issue in the repository or contact the development team.
+
+---
+
+## Contact
+
+- **Repository:** [TrainerSamay on GitHub](https://github.com/IJNikhil/TrainerSamay)  
+- **Developer:** IJNikhil  
 - **Issues:** [GitHub Issues](https://github.com/IJNikhil/TrainerSamay/issues)
