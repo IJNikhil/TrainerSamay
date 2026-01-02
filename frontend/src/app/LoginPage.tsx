@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { motion } from "framer-motion";
-import { Briefcase, LogIn, Mail, Lock, ArrowRight } from "lucide-react";
+import { Briefcase, ArrowRight } from "lucide-react";
 
 import { useAuth } from "../hooks/use-auth";
 import { useToast } from "../hooks/use-toast";
@@ -15,14 +14,7 @@ import { loginWithSession } from "../api/auth";
 
 import { Button } from "../components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import {
-  Form, // Fixed import to just Form from shadcn setup if it exports it, otherwise use context
+  Form,
   FormControl,
   FormField,
   FormItem,
