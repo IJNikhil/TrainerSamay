@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "../ui/button";
-import { Card, CardHeader, CardContent, CardTitle } from "../ui/card";
+import { Card, CardHeader, CardContent } from "../ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { cn } from "../../lib/utils";
 import type { Session } from "../../lib/types";

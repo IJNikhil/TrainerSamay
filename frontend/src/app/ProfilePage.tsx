@@ -35,7 +35,6 @@ import {
   ShieldCheck,
   UserCircle,
   Camera,
-  TrendingUp,
   CheckCircle,
   AlertTriangle,
   BarChart3,
