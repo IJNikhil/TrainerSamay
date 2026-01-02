@@ -103,8 +103,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS Config
 # If CORS_ALLOWED_ORIGINS is set in env, use it. Otherwise, if DEBUG is True, allow all.
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
-# Filter out empty strings
-CORS_ALLOWED_ORIGINS = [origin for origin in CORS_ALLOWED_ORIGINS if origin]
+# Filter out empty strings and strip whitespace
+CORS_ALLOWED_ORIGINS = [origin.strip().strip('/') for origin in CORS_ALLOWED_ORIGINS if origin]
 
 if not CORS_ALLOWED_ORIGINS:
     CORS_ALLOW_ALL_ORIGINS = True
@@ -128,11 +128,13 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # --- CSRF Trusted Origins ---
+# Explicitly trust localhost for dev, plus any origins allowed by CORS
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
     "http://localhost:9002",
 ]
+CSRF_TRUSTED_ORIGINS.extend(CORS_ALLOWED_ORIGINS)
 
 # --- Custom User Model ---
 AUTH_USER_MODEL = 'core.User'
