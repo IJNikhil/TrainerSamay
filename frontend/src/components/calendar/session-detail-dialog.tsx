@@ -98,14 +98,16 @@ export function SessionDetailDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="w-auto max-w-[90vw] min-w-[30vw]">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-3 text-2xl">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Tag className="w-6 h-6 text-primary" />
-            </div>
-            <span>Session Details</span>
-          </DialogTitle>
+      <DialogContent className="w-full h-[100dvh] max-w-full sm:h-auto sm:max-w-lg md:max-w-xl bg-white sm:rounded-2xl border-0 sm:border border-slate-100 p-0 overflow-hidden flex flex-col shadow-2xl">
+        <DialogHeader className="p-4 sm:p-6 bg-slate-50 border-b border-slate-100 shrink-0">
+          <div className="flex justify-between items-start">
+            <DialogTitle className="flex items-center gap-3 text-xl sm:text-2xl font-bold text-slate-900">
+               <div className="p-2 bg-primary/10 rounded-lg">
+                  <Tag className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+               </div>
+               <span>Session Details</span>
+            </DialogTitle>
+          </div>
         </DialogHeader>
         <div className="py-4 space-y-5 max-h-[60vh] overflow-y-auto px-1 -mx-1">
           <div className="flex justify-between items-start px-1">
@@ -128,22 +130,22 @@ export function SessionDetailDialog({
           </div>
           <Separator />
         </div>
-        <DialogFooter className="pt-4 mt-4 border-t flex flex-col sm:flex-row sm:justify-between gap-2">
+        <DialogFooter className="p-4 sm:p-6 bg-white border-t border-slate-100 shrink-0 flex flex-col sm:flex-row gap-3 sm:gap-4 z-20">
           {currentUser?.role === "admin" ? (
-            <Button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="border border-border bg-background hover:bg-muted text-foreground"
-            >
-              Close
-            </Button>
+             <Button
+               type="button"
+               onClick={() => setIsOpen(false)}
+               className="w-full sm:w-auto border border-border bg-background hover:bg-muted text-foreground font-medium"
+             >
+               Close
+             </Button>
           ) : (
             <>
-              <div className="w-full sm:w-auto">
+              <div className="w-full sm:w-auto order-last sm:order-first">
                 {onUpdateSession && (status === "Scheduled" || status === "Started") && (
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button className="w-full sm:w-auto bg-destructive text-white hover:bg-destructive/90 flex items-center gap-2" type="button">
+                      <Button className="w-full sm:w-auto bg-red-50 text-red-600 hover:bg-red-100 border-red-200 border flex items-center justify-center gap-2" type="button">
                         <Ban className="mr-2 h-4 w-4" /> Cancel Session
                       </Button>
                     </AlertDialogTrigger>
@@ -164,18 +166,18 @@ export function SessionDetailDialog({
                   </AlertDialog>
                 )}
               </div>
-              <div className="flex flex-col-reverse sm:flex-row gap-2">
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto justify-end">
                 <Button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="border border-border bg-background hover:bg-muted text-foreground"
+                  className="w-full sm:w-auto text-slate-500 hover:text-slate-700 bg-transparent hover:bg-slate-100"
                 >
                   Close
                 </Button>
                 {onUpdateSession && status === "Scheduled" && (
                   <Button
                     onClick={() => handleUpdateStatus("Started")}
-                    className="bg-yellow-600 hover:bg-yellow-700 flex items-center gap-2"
+                    className="w-full sm:w-auto bg-yellow-600 hover:bg-yellow-700 text-white font-bold shadow-md shadow-yellow-200 flex items-center justify-center gap-2"
                     disabled={!isSessionToday}
                     type="button"
                   >
@@ -185,7 +187,7 @@ export function SessionDetailDialog({
                 {onUpdateSession && status === "Started" && (
                   <Button
                     onClick={() => handleUpdateStatus("Completed")}
-                    className="bg-green-600 hover:bg-green-700 flex items-center gap-2"
+                    className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md shadow-emerald-200 flex items-center justify-center gap-2"
                     disabled={!isSessionToday}
                     type="button"
                   >

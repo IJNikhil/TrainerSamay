@@ -255,9 +255,9 @@ export function SessionDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-2xl bg-slate-50 border-slate-200 p-0 overflow-hidden">
-        <DialogHeader className="p-6 pb-4 bg-white border-b border-slate-100">
-          <div className="flex justify-between items-start">
+      <DialogContent className="w-full h-[100dvh] max-w-full sm:h-auto sm:max-w-xl md:max-w-2xl bg-white sm:rounded-2xl border-0 sm:border border-slate-100 p-0 overflow-hidden flex flex-col shadow-2xl">
+        <DialogHeader className="p-4 sm:p-6 pb-2 sm:pb-4 bg-white border-b border-slate-100 shrink-0">
+          <div className="flex justify-between items-center sm:items-start">
             <div className="space-y-1">
               <DialogTitle className="text-xl font-bold text-slate-900 flex items-center gap-2">
                 {session ? (
@@ -289,8 +289,8 @@ export function SessionDialog({
         </DialogHeader>
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
-            <div className="p-6 space-y-6 flex-1 overflow-y-auto max-h-[65vh]">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full overflow-hidden">
+            <div className="flex-1 overflow-y-auto px-4 py-6 sm:p-8 space-y-8 bg-slate-50/50">
                 
                  {/* Top Section: Trainer Selector (if creating as admin) */}
                 {!currentTrainer && (
@@ -347,8 +347,8 @@ export function SessionDialog({
                 </div>
             </div>
 
-            <DialogFooter className="p-6 pt-4 bg-white border-t border-slate-100 flex-col sm:flex-row gap-3 sm:gap-0">
-               <div className="flex-1 text-xs text-slate-400 font-medium flex items-center">
+            <DialogFooter className="p-4 sm:p-6 bg-white border-t border-slate-100 shrink-0 flex-col sm:flex-row gap-3 sm:gap-4 z-20">
+               <div className="flex-1 text-xs text-slate-400 font-medium flex items-center justify-center sm:justify-start">
                   {canSubmit ? (
                      <span className="text-emerald-600 flex items-center gap-1.5 bg-emerald-50 px-2 py-1 rounded-full">
                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -361,11 +361,11 @@ export function SessionDialog({
                      </span>
                   )}
                </div>
-              <div className="flex gap-3 w-full sm:w-auto">
+              <div className="grid grid-cols-2 sm:flex gap-3 w-full sm:w-auto">
                   <Button
                     type="button"
-                    variant="outline"
-                    className="flex-1 sm:flex-none border-slate-200 text-slate-600 hover:bg-slate-50 font-medium"
+                    variant="ghost"
+                    className="w-full sm:w-auto text-slate-500 hover:bg-slate-50 hover:text-slate-700"
                     onClick={() => setIsOpen(false)}
                   >
                     Cancel
@@ -374,8 +374,8 @@ export function SessionDialog({
                     type="submit" 
                     disabled={!canSubmit}
                     className={cn(
-                        "flex-1 sm:flex-none font-bold transition-all shadow-sm hover:shadow-md",
-                        canSubmit ? "bg-indigo-600 hover:bg-indigo-700 text-white" : "bg-slate-200 text-slate-400"
+                        "w-full sm:w-auto font-bold shadow-lg transition-all",
+                        canSubmit ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200" : "bg-slate-200 text-slate-400 shadow-none"
                     )}
                   >
                     {isSubmitting ? "Saving..." : session ? "Save Changes" : "Create Session"}

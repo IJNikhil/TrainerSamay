@@ -210,12 +210,30 @@ export default function ProfilePage() {
 
   return (
     <AuthenticatedLayout>
-      <div className="flex-1 space-y-8 max-w-7xl mx-auto w-full">
-         {/* Header */}
-        <div className="border-b border-slate-200/60 pb-6">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900">My Profile</h2>
-            <p className="text-slate-500 mt-1">Manage your account settings and preferences.</p>
+      <div className="flex-1 w-full flex flex-col min-h-screen pb-12">
+        {/* Premium Hero Header */}
+        <div className="relative bg-gradient-to-r from-slate-800 to-slate-900 pb-32 -mt-6 -mx-4 md:-mx-8 px-4 md:px-8 pt-12 space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 max-w-7xl mx-auto w-full relative z-10">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-indigo-400">
+                <UserCircle className="h-5 w-5" />
+                <span className="text-sm font-medium uppercase tracking-wider">Account Management</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
+                My Profile
+              </h2>
+              <p className="text-slate-400 text-lg font-medium max-w-2xl pt-2">
+                Manage your personal details, security settings, and view your performance stats.
+              </p>
+            </div>
+          </div>
+          {/* Abstract background shapes */}
+          <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+            <ShieldCheck className="h-64 w-64 text-white" />
+          </div>
         </div>
+
+        <div className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 -mt-24 relative z-20 space-y-8">
 
         {/* 📊 Performance Stats Row (Trainers Only) */}
         {user.role === "trainer" && trainerStats && (
@@ -425,6 +443,7 @@ export default function ProfilePage() {
             </Card>
           </div>
         </div>
+      </div>
       </div>
     </AuthenticatedLayout>
   );
