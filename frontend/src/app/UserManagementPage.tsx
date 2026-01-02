@@ -141,12 +141,12 @@ export default function UserManagement() {
 
   return (
     <AuthenticatedLayout>
-      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="flex-1 space-y-8 max-w-7xl mx-auto w-full">
+        <div className="flex items-center justify-between border-b border-slate-200/60 pb-6">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">User Management</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900">User Management</h2>
             <p className="text-slate-500 mt-1">
-              Add, edit, or manage user accounts.
+              Manage platform users, roles, and access controls.
             </p>
           </div>
           <Button onClick={handleAddNewClick} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm">

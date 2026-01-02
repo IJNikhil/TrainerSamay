@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import {
   CheckCircle,
-  XCircle,
   CalendarClock,
   AlertTriangle,
   FileDown,
@@ -227,78 +226,81 @@ const handleExport = useCallback(() => {
 
   return (
     <AuthenticatedLayout>
-      <div className="flex-1 space-y-8 p-4 md:p-8 pt-6">
+      <div className="flex-1 space-y-8 max-w-7xl mx-auto w-full">
         {/* Header */}
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Session Reports</h2>
-          <p className="text-muted-foreground">
-            View attendance history and session statistics.
+        <div className="border-b border-slate-200/60 pb-6">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900">Session Reports</h2>
+          <p className="text-slate-500 mt-1">
+             View attendance history, status analytics, and detailed session logs.
           </p>
         </div>
 
         {/* Stats */}
-        {/* Stats */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-  <Card className="border-slate-200 shadow-sm bg-white hover:shadow-md transition-all duration-200">
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-semibold text-slate-600">
-        Total Sessions
-      </CardTitle>
-      <div className="p-2 bg-slate-100 rounded-lg">
-        <CalendarClock className="h-4 w-4 text-slate-600" />
-      </div>
-    </CardHeader>
-    <CardContent>
-      <div className="text-3xl font-bold text-slate-900">{summaryStats.total}</div>
-      <p className="text-xs text-slate-500 mt-1">All scheduled sessions</p>
-    </CardContent>
-  </Card>
+        <Card className="border-l-[4px] border-l-slate-500 shadow-sm hover:shadow-md transition-all duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-semibold text-slate-500 tracking-wide uppercase">
+                Total Sessions
+            </CardTitle>
+            <div className="p-2 bg-slate-100 rounded-full">
+                <CalendarClock className="h-4 w-4 text-slate-600" />
+            </div>
+            </CardHeader>
+            <CardContent>
+            <div className="text-3xl font-bold text-slate-900 tracking-tight">{summaryStats.total}</div>
+            <p className="text-xs text-slate-500 mt-1 font-medium">Recorded in period</p>
+            </CardContent>
+        </Card>
 
-  <Card className="border-slate-200 shadow-sm bg-white hover:shadow-md transition-all duration-200">
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-semibold text-slate-600">
-        Completed
-      </CardTitle>
-      <div className="p-2 bg-green-50 rounded-lg">
-        <CheckCircle className="h-4 w-4 text-green-600" />
-      </div>
-    </CardHeader>
-    <CardContent>
-      <div className="text-3xl font-bold text-slate-900">{summaryStats.completed}</div>
-      <p className="text-xs text-slate-500 mt-1">Sessions successfully conducted</p>
-    </CardContent>
-  </Card>
+        <Card className="border-l-[4px] border-l-emerald-500 shadow-sm hover:shadow-md transition-all duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-semibold text-slate-500 tracking-wide uppercase">
+                Completed
+            </CardTitle>
+            <div className="p-2 bg-emerald-50 rounded-full">
+                <CheckCircle className="h-4 w-4 text-emerald-600" />
+            </div>
+            </CardHeader>
+            <CardContent>
+            <div className="text-3xl font-bold text-slate-900 tracking-tight">{summaryStats.completed}</div>
+            <p className="text-xs text-slate-500 mt-1 font-medium">Successfully conducted</p>
+            </CardContent>
+        </Card>
 
-  <Card className="border-slate-200 shadow-sm bg-white hover:shadow-md transition-all duration-200">
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-semibold text-slate-600">
-        Absences
-      </CardTitle>
-      <div className="p-2 bg-amber-50 rounded-lg">
-        <AlertTriangle className="h-4 w-4 text-amber-600" />
-      </div>
-    </CardHeader>
-    <CardContent>
-      <div className="text-3xl font-bold text-slate-900">{summaryStats.absent}</div>
-      <p className="text-xs text-slate-500 mt-1">Trainer or trainee was absent</p>
-    </CardContent>
-  </Card>
+        <Card className="border-l-[4px] border-l-amber-500 shadow-sm hover:shadow-md transition-all duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-semibold text-slate-500 tracking-wide uppercase">
+                Absent/Cancelled
+            </CardTitle>
+            <div className="p-2 bg-amber-50 rounded-full">
+                <AlertTriangle className="h-4 w-4 text-amber-600" />
+            </div>
+            </CardHeader>
+            <CardContent>
+            <div className="text-3xl font-bold text-slate-900 tracking-tight">
+                {summaryStats.cancelled + summaryStats.absent}
+            </div>
+            <p className="text-xs text-slate-500 mt-1 font-medium">Missed sessions</p>
+            </CardContent>
+        </Card>
 
-  <Card className="border-slate-200 shadow-sm bg-white hover:shadow-md transition-all duration-200">
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-semibold text-slate-600">
-        Cancelled
-      </CardTitle>
-      <div className="p-2 bg-red-50 rounded-lg">
-        <XCircle className="h-4 w-4 text-red-600" />
-      </div>
-    </CardHeader>
-    <CardContent>
-      <div className="text-3xl font-bold text-slate-900">{summaryStats.cancelled}</div>
-      <p className="text-xs text-slate-500 mt-1">Cancelled by trainer or admin</p>
-    </CardContent>
-  </Card>
-</div>
+        <Card className="border-l-[4px] border-l-blue-500 shadow-sm hover:shadow-md transition-all duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-semibold text-slate-500 tracking-wide uppercase">
+                Completion Rate
+            </CardTitle>
+            <div className="p-2 bg-blue-50 rounded-full">
+                <FileDown className="h-4 w-4 text-blue-600" />
+            </div>
+            </CardHeader>
+            <CardContent>
+            <div className="text-3xl font-bold text-slate-900 tracking-tight">
+                {summaryStats.completionRate.toFixed(1)}%
+            </div>
+            <p className="text-xs text-slate-500 mt-1 font-medium">Success rate</p>
+            </CardContent>
+        </Card>
+        </div>
 
         {/* Filters + Table */}
         <Card className="border-slate-200 shadow-sm bg-white overflow-hidden">

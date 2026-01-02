@@ -64,29 +64,6 @@ const passwordFormSchema = z
     path: ["confirmPassword"],
   });
 
-const StatCard = ({
-  icon: Icon,
-  title,
-  value,
-  footer,
-}: {
-  icon: React.ElementType;
-  title: string;
-  value: string | number;
-  footer: string;
-}) => (
-  <Card>
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      <Icon className="h-4 w-4 text-muted-foreground" />
-    </CardHeader>
-    <CardContent>
-      <div className="text-2xl font-bold">{value}</div>
-      <p className="text-xs text-muted-foreground">{footer}</p>
-    </CardContent>
-  </Card>
-);
-
 export default function ProfilePage() {
   const { user, updateUser: updateUserContext } = useAuth();
   const { toast } = useToast();
@@ -233,204 +210,220 @@ export default function ProfilePage() {
 
   return (
     <AuthenticatedLayout>
-      <div className="flex-1 space-y-6 p-4 md:p-8 pt-6">
-        <h2 className="text-3xl font-bold tracking-tight">My Profile</h2>
+      <div className="flex-1 space-y-8 max-w-7xl mx-auto w-full">
+         {/* Header */}
+        <div className="border-b border-slate-200/60 pb-6">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900">My Profile</h2>
+            <p className="text-slate-500 mt-1">Manage your account settings and preferences.</p>
+        </div>
 
-        {/* 📊 Performance Stats Row */}
+        {/* 📊 Performance Stats Row (Trainers Only) */}
         {user.role === "trainer" && trainerStats && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard
-              icon={Calendar}
-              title="Total Sessions"
-              value={trainerStats.total}
-              footer="All sessions assigned to you."
-            />
-            <StatCard
-              icon={CheckCircle}
-              title="Completed"
-              value={trainerStats.completed}
-              footer="Successfully conducted."
-            />
-            <StatCard
-              icon={AlertTriangle}
-              title="Absences"
-              value={trainerStats.absent}
-              footer="Client or trainer missed."
-            />
-            <StatCard
-              icon={BarChart3}
-              title="Attendance Rate"
-              value={`${trainerStats.attendanceRate.toFixed(1)}%`}
-              footer="Completed vs missed sessions"
-            />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="border-l-[4px] border-l-indigo-500 shadow-sm overflow-hidden">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-sm font-semibold text-slate-500 tracking-wide">Total Sessions</CardTitle>
+                    <Calendar className="h-4 w-4 text-indigo-500" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold text-slate-900">{trainerStats.total}</div>
+                </CardContent>
+            </Card>
+            <Card className="border-l-[4px] border-l-emerald-500 shadow-sm overflow-hidden">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-sm font-semibold text-slate-500 tracking-wide">Completed</CardTitle>
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold text-slate-900">{trainerStats.completed}</div>
+                </CardContent>
+            </Card>
+             <Card className="border-l-[4px] border-l-amber-500 shadow-sm overflow-hidden">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-sm font-semibold text-slate-500 tracking-wide">Absences</CardTitle>
+                    <AlertTriangle className="h-4 w-4 text-amber-500" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold text-slate-900">{trainerStats.absent}</div>
+                </CardContent>
+            </Card>
+             <Card className="border-l-[4px] border-l-blue-500 shadow-sm overflow-hidden">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-sm font-semibold text-slate-500 tracking-wide">Attendance Rate</CardTitle>
+                    <BarChart3 className="h-4 w-4 text-blue-500" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold text-slate-900">{trainerStats.attendanceRate.toFixed(1)}%</div>
+                </CardContent>
+            </Card>
           </div>
         )}
 
-        {/* 👤 Profile Info & Avatar & Security — Single Row */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Avatar */}
-          <Card className="flex flex-col items-center text-center p-6">
-            <div className="relative group">
-              <Avatar className="h-32 w-32 border-4 border-primary shadow-lg mb-4">
-                <AvatarImage src={avatarPreview} alt={user.name} />
-                <AvatarFallback className="text-5xl">
-                  {user.name.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <button
-                onClick={handleAvatarClick}
-                className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                aria-label="Change avatar"
-              >
-                <Camera className="w-6 h-6" />
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                onChange={handleFileChange}
-                accept="image/*"
-                className="hidden"
-              />
-            </div>
-            <h3 className="text-xl font-bold">{user.name}</h3>
-            <p className="text-muted-foreground text-sm">{user.email}</p>
-            <Badge
-              variant={user.role === "admin" ? "destructive" : "secondary"}
-              className="capitalize mt-2"
-            >
-              {user.role}
-            </Badge>
-          </Card>
-
-          {/* Profile Info */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <UserCircle className="w-5 h-5 text-primary" />
-                <CardTitle>Profile Information</CardTitle>
-              </div>
-              <CardDescription>Update your details below.</CardDescription>
-            </CardHeader>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleProfileSubmit)}>
-                <CardContent className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="John Doe" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div>
-                    <Label>Email Address</Label>
-                    <Input
-                      type="email"
-                      value={user.email}
-                      disabled
-                      readOnly
-                      className="bg-muted/50 cursor-not-allowed"
-                    />
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button type="submit" disabled={isSaveDisabled}>
-                    Save Changes
-                  </Button>
-                </CardFooter>
-              </form>
-            </Form>
-          </Card>
-
-          {/* Password */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="w-5 h-5 text-primary" />
-                <CardTitle>Security</CardTitle>
-              </div>
-              <CardDescription>Change your account’s password.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {!showPasswordForm ? (
-                <div className="flex justify-between items-center bg-muted/20 p-4 rounded-md">
-                  <p className="text-sm text-muted-foreground">
-                    For better protection, keep your password updated.
-                  </p>
-                  <Button variant="outline" onClick={() => setShowPasswordForm(true)}>
-                    Change
-                  </Button>
-                </div>
-              ) : (
-                <Form {...passwordForm}>
-                  <form
-                    onSubmit={passwordForm.handleSubmit(handlePasswordChange)}
-                    className="space-y-4"
-                  >
-                    <FormField
-                      control={passwordForm.control}
-                      name="currentPassword"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Current Password</FormLabel>
-                          <FormControl>
-                            <Input type="password" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={passwordForm.control}
-                      name="newPassword"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>New Password</FormLabel>
-                          <FormControl>
-                            <Input type="password" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={passwordForm.control}
-                      name="confirmPassword"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Confirm Password</FormLabel>
-                          <FormControl>
-                            <Input type="password" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() => {
-                          setShowPasswordForm(false);
-                          passwordForm.reset();
-                        }}
+        <div className="grid gap-8 lg:grid-cols-3">
+          {/* LEFT COLUMN: Identity Card */}
+          <div className="lg:col-span-1 space-y-6">
+              <Card className="relative overflow-hidden border-slate-200 shadow-sm bg-white">
+                <div className="h-24 bg-gradient-to-r from-indigo-500 to-indigo-600"></div>
+                <div className="px-6 pb-6 text-center -mt-12">
+                   <div className="relative inline-block group">
+                      <Avatar className="h-24 w-24 border-4 border-white shadow-md bg-white">
+                        <AvatarImage src={avatarPreview} alt={user.name} />
+                        <AvatarFallback className="text-2xl font-bold bg-slate-100 text-slate-600">
+                          {user.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <button
+                        onClick={handleAvatarClick}
+                        className="absolute bottom-0 right-0 p-1.5 bg-indigo-600 text-white rounded-full shadow-sm hover:bg-indigo-700 transition-colors"
+                        title="Upload new photo"
                       >
-                        Cancel
+                         <Camera className="w-4 h-4" />
+                      </button>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        onChange={handleFileChange}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                   </div>
+                   
+                   <h3 className="mt-3 text-xl font-bold text-slate-900">{user.name}</h3>
+                   <p className="text-sm text-slate-500 font-medium">{user.email}</p>
+                   
+                   <div className="mt-4 flex justify-center">
+                       <Badge variant={user.role === 'admin' ? 'destructive' : 'secondary'} className="px-3 py-1 text-xs uppercase tracking-wider font-semibold">
+                          {user.role}
+                       </Badge>
+                   </div>
+                </div>
+              </Card>
+          </div>
+
+          {/* RIGHT COLUMN: Edit Forms */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Personal Information */}
+            <Card className="border-slate-200 shadow-sm bg-white">
+                <CardHeader className="border-b border-slate-100 bg-slate-50/50 pb-4">
+                  <div className="flex items-center gap-2">
+                    <UserCircle className="w-5 h-5 text-indigo-600" />
+                    <CardTitle className="text-lg font-bold text-slate-800">Personal Information</CardTitle>
+                  </div>
+                  <CardDescription>Update your display name and basic details.</CardDescription>
+                </CardHeader>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(handleProfileSubmit)}>
+                    <CardContent className="space-y-4 pt-6">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-700">Full Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="John Doe" {...field} className="bg-slate-50 border-slate-200 focus:border-indigo-500" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div>
+                        <Label className="text-slate-700">Email Address</Label>
+                        <Input
+                          value={user.email}
+                          disabled
+                          readOnly
+                          className="bg-slate-100 border-slate-200 text-slate-500 cursor-not-allowed mt-1.5"
+                        />
+                      </div>
+                    </CardContent>
+                    <CardFooter className="bg-slate-50/30 border-t border-slate-100 py-4 flex justify-end">
+                      <Button type="submit" disabled={isSaveDisabled} className={isSaveDisabled ? "opacity-50" : "bg-indigo-600 hover:bg-indigo-700"}>
+                        Save Changes
                       </Button>
-                      <Button type="submit" disabled={passwordLoading}>
-                        {passwordLoading ? "Updating..." : "Change Password"}
-                      </Button>
-                    </div>
+                    </CardFooter>
                   </form>
                 </Form>
-              )}
-            </CardContent>
-          </Card>
+            </Card>
+
+            {/* Security Settings */}
+            <Card className="border-slate-200 shadow-sm bg-white">
+                <CardHeader className="border-b border-slate-100 bg-slate-50/50 pb-4">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-indigo-600" />
+                    <CardTitle className="text-lg font-bold text-slate-800">Security Settings</CardTitle>
+                  </div>
+                  <CardDescription>Manage your password and security preferences.</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6">
+                   {!showPasswordForm ? (
+                    <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-lg">
+                      <div className="space-y-1">
+                         <p className="font-semibold text-slate-900">Password</p>
+                         <p className="text-sm text-slate-500">Last changed recently</p>
+                      </div>
+                      <Button variant="outline" onClick={() => setShowPasswordForm(true)} className="border-slate-200 hover:bg-white hover:text-indigo-600">
+                        Change Password
+                      </Button>
+                    </div>
+                   ) : (
+                    <Form {...passwordForm}>
+                      <form onSubmit={passwordForm.handleSubmit(handlePasswordChange)} className="space-y-4">
+                        <div className="grid gap-4 sm:grid-cols-2">
+                            <FormField
+                            control={passwordForm.control}
+                            name="currentPassword"
+                            render={({ field }) => (
+                                <FormItem className="sm:col-span-2">
+                                <FormLabel>Current Password</FormLabel>
+                                <FormControl>
+                                    <Input type="password" {...field} className="bg-slate-50" />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                            />
+                            <FormField
+                            control={passwordForm.control}
+                            name="newPassword"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>New Password</FormLabel>
+                                <FormControl>
+                                    <Input type="password" {...field} className="bg-slate-50" />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                            />
+                            <FormField
+                            control={passwordForm.control}
+                            name="confirmPassword"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Confirm Password</FormLabel>
+                                <FormControl>
+                                    <Input type="password" {...field} className="bg-slate-50" />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                            />
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                          <Button type="button" variant="ghost" onClick={() => { setShowPasswordForm(false); passwordForm.reset(); }}>
+                            Cancel
+                          </Button>
+                          <Button type="submit" disabled={passwordLoading} className="bg-indigo-600 hover:bg-indigo-700">
+                            {passwordLoading ? "Updating..." : "Update Password"}
+                          </Button>
+                        </div>
+                      </form>
+                    </Form>
+                   )}
+                </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </AuthenticatedLayout>

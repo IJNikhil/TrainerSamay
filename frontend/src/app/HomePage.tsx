@@ -190,15 +190,21 @@ export default function HomePage() {
 
   return (
     <AuthenticatedLayout>
-      <div className="flex-1 space-y-8 p-4 md:p-8 pt-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <h2 className="text-3xl font-bold tracking-tight">
-            {user?.role === "admin" ? "Admin Dashboard" : "Dashboard"}
-          </h2>
+      <div className="flex-1 space-y-6 max-w-7xl mx-auto w-full">
+        {/* Page Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/60 pb-6 mb-6">
+          <div>
+             <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+               {user?.role === "admin" ? "Admin Dashboard" : "Dashboard"}
+             </h2>
+             <p className="text-slate-500 mt-1">
+               Welcome back, <span className="font-semibold text-slate-700">{user?.name}</span>. Here's what's happening today.
+             </p>
+          </div>
 
           {user?.role === "trainer" && (
             <div className="flex items-center space-x-2">
-              <Button onClick={handleAddNewClick}>
+              <Button onClick={handleAddNewClick} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm hover:shadow-md transition-all">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 New Session
               </Button>
@@ -222,18 +228,18 @@ export default function HomePage() {
           />
         )}
 
-        <Tabs defaultValue="week" className="space-y-4">
+        <Tabs defaultValue="week" className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <TabsList>
-              <TabsTrigger value="week">
+            <TabsList className="bg-slate-100/50 border border-slate-200 p-1 h-auto">
+              <TabsTrigger value="week" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm">
                 <CalendarDays className="mr-2 h-4 w-4" />
                 Week View
               </TabsTrigger>
-              <TabsTrigger value="calendar">
+              <TabsTrigger value="calendar" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm">
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 Month View
               </TabsTrigger>
-              <TabsTrigger value="agenda">
+              <TabsTrigger value="agenda" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm">
                 <List className="mr-2 h-4 w-4" />
                 Agenda View
               </TabsTrigger>
