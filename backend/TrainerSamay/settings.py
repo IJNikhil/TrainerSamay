@@ -100,11 +100,28 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # --- Default Auto Field ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+from urllib.parse import urlparse
+
 # CORS Config
 # If CORS_ALLOWED_ORIGINS is set in env, use it. Otherwise, if DEBUG is True, allow all.
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
-# Filter out empty strings and strip whitespace
-CORS_ALLOWED_ORIGINS = [origin.strip().strip('/') for origin in CORS_ALLOWED_ORIGINS if origin]
+
+def clean_origin(url):
+    url = url.strip()
+    if not url: return None
+    try:
+        parsed = urlparse(url)
+        # If user just pastes domain without scheme, assume https (or handle raw domain)
+        if not parsed.scheme:
+            # It might be just 'localhost:5173'
+            return f"https://{url}" if 'localhost' not in url else f"http://{url}"
+        return f"{parsed.scheme}://{parsed.netloc}"
+    except:
+        return url
+
+# Clean and filter
+CORS_ALLOWED_ORIGINS = [clean_origin(origin) for origin in CORS_ALLOWED_ORIGINS if origin]
+CORS_ALLOWED_ORIGINS = [o for o in CORS_ALLOWED_ORIGINS if o]
 
 if not CORS_ALLOWED_ORIGINS:
     CORS_ALLOW_ALL_ORIGINS = True
