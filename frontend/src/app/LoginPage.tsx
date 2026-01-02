@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import { motion } from "framer-motion";
-import { Briefcase, LogIn } from "lucide-react";
+import { Briefcase, LogIn, Mail, Lock } from "lucide-react";
 
 import { useAuth } from "../hooks/use-auth";
 import { useToast } from "../hooks/use-toast";
@@ -60,10 +60,10 @@ export default function LoginPage() {
 
       toast({
         title: "Login Successful",
-        description: `Welcome back, ${user.name}! (${user.role})`,
+        description: `Welcome back, ${user.name}!`,
       });
 
-      login(user);
+      login(user); // Restore auth state
       navigate("/");
     } catch (err: any) {
       console.error("Login error:", err);
@@ -79,44 +79,72 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-muted/40 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-400 via-purple-500 to-slate-900 p-4">
+      {/* Abstract Background Shapes */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+        <motion.div 
+            animate={{ x: [0, 100, 0], y: [0, -50, 0] }}
+            transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+            className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-purple-600/30 rounded-full blur-[100px]" 
+        />
+        <motion.div 
+            animate={{ x: [0, -100, 0], y: [0, 100, 0] }}
+            transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+            className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-indigo-600/30 rounded-full blur-[120px]" 
+        />
+      </div>
+
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="w-full max-w-md z-10"
       >
-        <Card className="shadow-2xl">
-          <CardHeader className="text-center p-8">
-            <div className="flex justify-center items-center mb-4">
-              <div className="p-4 bg-primary/10 rounded-full">
-                <Briefcase className="w-12 h-12 text-primary" />
+        <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-xl ring-1 ring-white/20">
+          <CardHeader className="text-center p-8 pb-4">
+            <motion.div 
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
+              className="flex justify-center items-center mb-6"
+            >
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+                <div className="relative p-4 bg-white rounded-2xl shadow-lg ring-1 ring-gray-900/5">
+                  <Briefcase className="w-10 h-10 text-indigo-600" />
+                </div>
               </div>
-            </div>
-            <CardTitle className="text-3xl font-bold">TrainerSamay</CardTitle>
-            <CardDescription>
-              Sign in to your account to continue
+            </motion.div>
+            <CardTitle className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-700 to-purple-800">
+              TrainerSamay
+            </CardTitle>
+            <CardDescription className="text-base text-gray-600 mt-2">
+              Welcome back! Please sign in to continue.
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="p-8 pt-0">
+          <CardContent className="p-8 pt-0 space-y-4">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
+                className="space-y-5"
               >
                 <FormField
                   control={form.control}
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">Email Address</FormLabel>
                       <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="name@example.com"
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                          <Input
+                            type="email"
+                            placeholder="you@company.com"
+                            className="pl-10 h-11 bg-gray-50/50 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all duration-200"
+                            {...field}
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -128,30 +156,50 @@ export default function LoginPage() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel className="text-gray-700 font-medium">Password</FormLabel>
+                        <a href="#" className="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Forgot password?</a>
+                      </div>
                       <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="••••••••"
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                          <Input
+                            type="password"
+                            placeholder="••••••••"
+                            className="pl-10 h-11 bg-gray-50/50 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all duration-200"
+                            {...field}
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full h-12 text-lg font-semibold"
-                >
-                  <LogIn className="mr-2 h-5 w-5" />
-                  {loading ? "Signing In..." : "Sign In"}
-                </Button>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                    <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full h-12 text-lg font-bold shadow-lg shadow-indigo-500/30 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300"
+                    >
+                    {loading ? (
+                        "Signing In..."
+                    ) : ( // Removed animated icon for cleaner button text center
+                        <span className="flex items-center justify-center">
+                            Sign In <LogIn className="ml-2 h-5 w-5" />
+                        </span>
+                    )}
+                    </Button>
+                </motion.div>
               </form>
             </Form>
           </CardContent>
+          <div className="p-6 bg-gray-50/50 border-t border-gray-100 rounded-b-xl text-center">
+                <p className="text-sm text-gray-500">
+                    Don't have an account?{" "}
+                    <span className="font-semibold text-indigo-600 cursor-not-allowed">Contact Admin</span>
+                </p>
+          </div>
         </Card>
       </motion.div>
     </div>
