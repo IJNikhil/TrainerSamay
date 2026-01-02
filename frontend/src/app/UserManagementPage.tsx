@@ -14,10 +14,6 @@ import {
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import {
-  Card,
-  CardContent,
-} from "../components/ui/card";
-import {
   Table,
   TableBody,
   TableCell,
@@ -149,77 +145,73 @@ export default function UserManagement() {
               Manage platform users, roles, and access controls.
             </p>
           </div>
-          <Button onClick={handleAddNewClick} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm">
+          <Button onClick={handleAddNewClick} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm hover:shadow-md transition-all">
             <PlusCircle className="mr-2 h-4 w-4" />
-            New User
+            Add New User
           </Button>
         </div>
 
-        <Card className="border-slate-200 shadow-sm bg-white overflow-hidden">
-          <CardContent className="p-0">
-            <div className="w-full overflow-auto">
-              <Table>
-                <TableHeader className="bg-slate-50 border-b border-slate-100">
-                  <TableRow className="hover:bg-slate-50/50">
-                    <TableHead className="w-[80px] font-semibold text-slate-700">Avatar</TableHead>
-                    <TableHead className="font-semibold text-slate-700">Name</TableHead>
-                    <TableHead className="font-semibold text-slate-700">Email</TableHead>
-                    <TableHead className="font-semibold text-slate-700">Role</TableHead>
-                    <TableHead className="text-right font-semibold text-slate-700">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users.length > 0 ? (
-                    users.map((u) => (
-                      <TableRow key={u.id} className="hover:bg-slate-50/50 transition-colors border-slate-100">
-                        <TableCell>
-                          <Avatar className="h-9 w-9 border border-slate-200">
-                            <AvatarImage src={u.avatar} alt={u.name} />
-                            <AvatarFallback className="bg-slate-100 text-slate-600 font-medium font-mono">{u.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                        </TableCell>
-                        <TableCell className="font-medium text-slate-900">{u.name}</TableCell>
-                        <TableCell className="text-slate-600">{u.email}</TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={u.role === "admin" ? "destructive" : "secondary"}
-                            className={cn(
-                              "capitalize font-medium shadow-sm border-0",
-                              u.role === "admin" ? "bg-indigo-100 text-indigo-700 hover:bg-indigo-200" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                            )}
-                          >
-                            {u.role}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {u.id !== user?.id && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEditClick(u)}
-                              className="text-slate-500 hover:text-indigo-600 hover:bg-indigo-50"
-                            >
-                              Edit
-                            </Button>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={5}
-                        className="text-center text-slate-500 h-32"
-                      >
-                        No users found.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Users Table */}
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+          <Table>
+            <TableHeader className="bg-slate-50/50">
+              <TableRow className="hover:bg-transparent border-slate-200">
+                <TableHead className="w-[100px] pl-6 py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Avatar</TableHead>
+                <TableHead className="py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Name</TableHead>
+                <TableHead className="py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Email</TableHead>
+                <TableHead className="py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Role</TableHead>
+                <TableHead className="text-right pr-6 py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {users.map((userItem) => (
+                <TableRow key={userItem.id} className="group hover:bg-indigo-50/30 transition-colors h-16 border-slate-100">
+                  <TableCell className="pl-6 font-medium">
+                    <Avatar className="h-9 w-9 ring-2 ring-white shadow-sm group-hover:ring-indigo-200 transition-all">
+                      <AvatarImage src={userItem.avatar} alt={userItem.name} />
+                      <AvatarFallback className="bg-slate-100 text-slate-600 font-bold">
+                        {userItem.name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </TableCell>
+                  <TableCell>
+                    <div className="font-semibold text-slate-900 group-hover:text-indigo-700 transition-colors">{userItem.name}</div>
+                  </TableCell>
+                  <TableCell className="text-slate-500">{userItem.email}</TableCell>
+                  <TableCell>
+                    <Badge
+                      className={cn(
+                        "rounded-full px-2.5 py-0.5 text-xs font-medium border shadow-none",
+                        userItem.role === "admin"
+                          ? "bg-purple-50 text-purple-700 border-purple-200"
+                          : "bg-emerald-50 text-emerald-700 border-emerald-200"
+                      )}
+                    >
+                      {userItem.role}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right pr-6">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleEditClick(userItem)}
+                      className="text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 font-medium"
+                    >
+                      Edit
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {users.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="h-32 text-center text-slate-500">
+                    No users found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
       <UserDialog

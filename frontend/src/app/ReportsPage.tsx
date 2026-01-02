@@ -17,13 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
+
 import {
   Table,
   TableBody,
@@ -34,7 +28,6 @@ import {
 } from "../components/ui/table";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Input } from "../components/ui/input";
 
 import { useAuth } from "../hooks/use-auth";
@@ -44,18 +37,6 @@ import { fetchSessions } from "../api/sessions";
 import { fetchTrainers } from "../api/availability";
 
 import type { Session, User } from "../lib/types";
-import { sessionStatuses } from "../lib/types";
-
-const statusBadgeClasses: Record<string, string> = {
-  Scheduled:
-    "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/50 dark:text-blue-200 dark:border-blue-700",
-  Completed:
-    "bg-green-100 text-green-800 border-green-300 dark:bg-green-900/50 dark:text-green-200 dark:border-green-700",
-  Cancelled:
-    "bg-red-100 text-red-800 border-red-300 dark:bg-red-900/50 dark:text-red-200 dark:border-red-700",
-  Absent:
-    "bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-900/50 dark:text-amber-200 dark:border-amber-700",
-};
 
 export default function ReportsPage() {
   const { user, loading } = useAuth();
@@ -303,124 +284,120 @@ const handleExport = useCallback(() => {
         </div>
 
         {/* Filters + Table */}
-        <Card className="border-slate-200 shadow-sm bg-white overflow-hidden">
-          <CardHeader className="border-b border-slate-100 bg-white/50">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-              <CardTitle className="text-xl font-bold text-slate-800">Session History</CardTitle>
-              <div className="flex flex-wrap gap-2 items-center justify-end w-full sm:w-auto">
-                {user.role === "admin" && (
-                  <Select value={filteredTrainerId} onValueChange={setFilteredTrainerId}>
-                    <SelectTrigger className="w-[180px] border-slate-200 bg-white focus:ring-slate-500">
-                      <SelectValue placeholder="Trainer" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Trainers</SelectItem>
-                      {trainers.map((t) => (
-                        <SelectItem key={t.id} value={t.id}>
-                          {t.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-
-                <Select value={filteredStatus} onValueChange={setFilteredStatus}>
-                  <SelectTrigger className="w-[180px] border-slate-200 bg-white focus:ring-slate-500">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Statuses</SelectItem>
-                    {sessionStatuses.map((status) => (
-                      <SelectItem key={status} value={status}>
-                        {status}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Input
-                  type="text"
-                  placeholder="Search Session Type"
-                  value={searchSessionType}
-                  onChange={(e) => setSearchSessionType(e.target.value)}
-                  className="w-[220px] border-slate-200 bg-white focus:ring-slate-500"
-                />
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleExport}
-                  disabled={sessionsToShow.length === 0}
-                  className="border-slate-200 hover:bg-slate-50 hover:text-slate-900"
-                >
-                  <FileDown className="mr-2 h-4 w-4" />
-                  Export CSV
-                </Button>
-              </div>
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row gap-4">
+             {/* Styled Inputs/Filters */}
+            <div className="flex-1">
+               <Input
+                 placeholder="Search by Session Type..."
+                 value={searchSessionType}
+                 onChange={(e) => setSearchSessionType(e.target.value)}
+                 className="h-10 bg-white border-slate-200 shadow-sm focus:border-indigo-500 transition-all font-medium text-slate-900 placeholder:text-slate-400/80"
+               />
             </div>
-          </CardHeader>
+            
+             <select
+              className="h-10 rounded-md border border-slate-200 bg-white px-3 py-1 text-sm shadow-sm transition-all focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-700 font-medium"
+              value={filteredStatus}
+              onChange={(e) => setFilteredStatus(e.target.value)}
+            >
+              <option value="all">All Statuses</option>
+              <option value="Scheduled">Scheduled</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Absent">Absent</option>
+            </select>
 
-          <CardContent className="p-0 overflow-auto">
+            {user?.role === "admin" && (
+              <select
+                className="h-10 rounded-md border border-slate-200 bg-white px-3 py-1 text-sm shadow-sm transition-all focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-700 font-medium"
+                value={filteredTrainerId}
+                onChange={(e) => setFilteredTrainerId(e.target.value)}
+              >
+                <option value="all">All Trainers</option>
+                {trainers.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
+            )}
+
+            <Button onClick={handleExport} variant="outline" className="border-indigo-200 text-indigo-700 hover:bg-indigo-50 font-semibold shadow-sm">
+              <FileDown className="mr-2 h-4 w-4" />
+              Export CSV
+            </Button>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <Table>
-              <TableHeader className="bg-slate-50 border-b border-slate-100">
-                <TableRow className="hover:bg-slate-50/50">
-                  <TableHead className="w-[120px] font-semibold text-slate-700">Date</TableHead>
-                  {user.role === "admin" && <TableHead className="font-semibold text-slate-700">Trainer</TableHead>}
-                  <TableHead className="font-semibold text-slate-700">Batch</TableHead>
-                  <TableHead className="font-semibold text-slate-700">Session Name/Type</TableHead>
-                  <TableHead className="text-right font-semibold text-slate-700">Status</TableHead>
+              <TableHeader className="bg-slate-50/50">
+                <TableRow className="hover:bg-transparent border-slate-200">
+                  <TableHead className="pl-6 py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Date</TableHead>
+                  <TableHead className="py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Time</TableHead>
+                  {user?.role === "admin" && <TableHead className="py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Trainer</TableHead>}
+                  <TableHead className="py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Batch</TableHead>
+                  <TableHead className="py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Type</TableHead>
+                  <TableHead className="py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Status</TableHead>
+                  <TableHead className="py-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">Notes</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sessionsToShow.length > 0 ? (
-                  sessionsToShow.map((session) => {
-                    const trainer = getTrainer(session.trainerId);
-                    return (
-                      <TableRow key={session.id} className="hover:bg-slate-50/50 transition-colors border-slate-100">
-                        <TableCell className="text-slate-600 font-medium">{format(new Date(session.date), "PP")}</TableCell>
-                        {user.role === "admin" && (
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Avatar className="h-8 w-8 border border-slate-200">
-                                <AvatarImage src={trainer?.avatar} />
-                                <AvatarFallback className="bg-slate-100 text-slate-600">
-                                  {trainer?.name?.charAt(0)}
-                                </AvatarFallback>
-                              </Avatar>
-                              <span className="text-slate-700">{trainer?.name}</span>
+                {sessionsToShow.map((session) => {
+                  const sessionDate = new Date(session.date);
+                  const trainer = getTrainer(session.trainerId);
+
+                  return (
+                    <TableRow key={session.id} className="group hover:bg-indigo-50/30 transition-colors h-16 border-slate-100">
+                      <TableCell className="pl-6 font-medium text-slate-700">
+                        {format(sessionDate, "MMM d, yyyy")}
+                      </TableCell>
+                      <TableCell className="text-slate-600 font-medium">
+                        {format(sessionDate, "h:mm a")}
+                      </TableCell>
+                      {user?.role === "admin" && (
+                        <TableCell>
+                            <div className="font-semibold text-slate-900 group-hover:text-indigo-700 transition-colors">
+                                {trainer?.name || "Unknown"}
                             </div>
-                          </TableCell>
-                        )}
-                        <TableCell className="text-slate-600">{session.batch}</TableCell>
-                        <TableCell className="text-slate-600">{session.sessionType}</TableCell>
-                        <TableCell className="text-right">
-                          <Badge
-                            variant="outline"
-                            className={cn(
-                              "capitalize font-semibold border-0",
-                              statusBadgeClasses[session.status]
-                            )}
-                          >
-                            {session.status}
-                          </Badge>
                         </TableCell>
-                      </TableRow>
-                    );
-                  })
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={user.role === "admin" ? 5 : 4}
-                      className="text-center text-slate-500 py-12"
-                    >
-                      No sessions found for the applied filters.
+                      )}
+                      <TableCell>
+                          <Badge variant="outline" className="rounded-md border-slate-200 bg-slate-50 text-slate-700 font-medium font-mono text-xs">
+                              {session.batch}
+                          </Badge>
+                      </TableCell>
+                      <TableCell className="text-slate-600 font-medium">{session.sessionType}</TableCell>
+                      <TableCell>
+                        <Badge
+                          className={cn(
+                            "rounded-full px-2.5 py-0.5 text-xs font-medium border shadow-none",
+                            session.status === "Scheduled" && "bg-blue-50 text-blue-700 border-blue-200",
+                            session.status === "Completed" && "bg-emerald-50 text-emerald-700 border-emerald-200",
+                            session.status === "Cancelled" && "bg-amber-50 text-amber-700 border-amber-200",
+                            session.status === "Absent" && "bg-red-50 text-red-700 border-red-200"
+                          )}
+                        >
+                          {session.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="max-w-[200px] truncate text-slate-500 text-xs italic">
+                        {session.notes || "-"}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                {sessionsToShow.length === 0 && (
+                   <TableRow>
+                    <TableCell colSpan={8} className="h-32 text-center text-slate-500">
+                      No sessions found for the selected filters.
                     </TableCell>
                   </TableRow>
                 )}
               </TableBody>
             </Table>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </AuthenticatedLayout>
   );

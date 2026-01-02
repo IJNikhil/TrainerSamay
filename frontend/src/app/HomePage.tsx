@@ -190,27 +190,33 @@ export default function HomePage() {
 
   return (
     <AuthenticatedLayout>
-      <div className="flex-1 space-y-6 max-w-7xl mx-auto w-full">
+      <div className="flex-1 w-full">
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/60 pb-6 mb-6">
-          <div>
-             <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-r from-indigo-700 to-indigo-900 pb-24 -mt-6 -mx-4 md:-mx-8 px-4 md:px-8 pt-12 space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 max-w-7xl mx-auto w-full">
+           <div className="space-y-2">
+             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white/95">
                {user?.role === "admin" ? "Admin Dashboard" : "Dashboard"}
              </h2>
-             <p className="text-slate-500 mt-1">
-               Welcome back, <span className="font-semibold text-slate-700">{user?.name}</span>. Here's what's happening today.
+             <p className="text-indigo-100 text-lg font-medium max-w-2xl leading-relaxed">
+               Welcome back, {user?.name}. You have <span className="text-white font-bold">{sessionsToShow.filter(s => s.status !== 'Completed' && s.status !== 'Cancelled').length}</span> active sessions scheduled for this week.
              </p>
-          </div>
-
-          {user?.role === "trainer" && (
-            <div className="flex items-center space-x-2">
-              <Button onClick={handleAddNewClick} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm hover:shadow-md transition-all">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                New Session
-              </Button>
-            </div>
-          )}
+           </div>
+           
+           {user?.role === "trainer" && (
+             <Button
+               onClick={handleAddNewClick} 
+               className="bg-white text-indigo-700 hover:bg-white/90 shadow-lg hover:shadow-xl transition-all font-semibold px-6 h-12 rounded-full border-0"
+             >
+               <PlusCircle className="mr-2 h-5 w-5" />
+               Create Session
+             </Button>
+           )}
         </div>
+      </div>
+
+      <div className="flex-1 space-y-8 max-w-7xl mx-auto w-full px-0 -mt-16 relative z-10">
 
         {user?.role === "admin" && (
           <AdminDashboard
@@ -304,6 +310,7 @@ export default function HomePage() {
           currentUser={user}
         />
       )}
+      </div>
     </AuthenticatedLayout>
   );
 }
