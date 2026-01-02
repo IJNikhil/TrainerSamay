@@ -28,7 +28,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/availability" element={<AvailabilityPage />} />
           <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/user-management" element={<UserManagementPage />} />
+          <Route path="/users" element={<UserManagementPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

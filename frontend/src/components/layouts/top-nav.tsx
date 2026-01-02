@@ -43,7 +43,7 @@ export function TopNav() {
       title: "Availability",
       href: "/availability",
       icon: CalendarDays,
-      roles: ["trainer"],
+      roles: ["trainer", "admin"],
     },
     {
       title: "Users",
