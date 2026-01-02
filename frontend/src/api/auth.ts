@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://trainer-samay-api.onrender.com/api";
 
 function getAuthToken(): string | null {
   return localStorage.getItem("authToken");
@@ -31,7 +31,7 @@ export async function loginAndGetToken(email: string, password: string): Promise
     try {
       const error = await tokenRes.json();
       errorMsg = error.detail || errorMsg;
-    } catch {}
+    } catch { }
     throw new Error(errorMsg);
   }
 
@@ -72,7 +72,7 @@ export async function loginWithSession(email: string, password: string): Promise
     try {
       const error = await sessionRes.json();
       errorMsg = error.message || errorMsg;
-    } catch {}
+    } catch { }
     throw new Error(errorMsg);
   }
 

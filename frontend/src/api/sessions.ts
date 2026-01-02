@@ -1,6 +1,6 @@
 import type { Session, SessionPayload } from "../lib/types";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://trainer-samay-api.onrender.com/api";
 
 
 
@@ -44,7 +44,7 @@ export async function fetchSessions(trainerId?: string): Promise<Session[]> {
     try {
       const errData = await res.json();
       if (errData.detail) errorMsg = errData.detail;
-    } catch {}
+    } catch { }
     throw new Error(errorMsg);
   }
   const data = await res.json();
