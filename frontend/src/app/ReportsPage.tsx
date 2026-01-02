@@ -237,69 +237,78 @@ const handleExport = useCallback(() => {
         </div>
 
         {/* Stats */}
+        {/* Stats */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-  <Card>
+  <Card className="border-slate-200 shadow-sm bg-white hover:shadow-md transition-all duration-200">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium text-muted-foreground">
+      <CardTitle className="text-sm font-semibold text-slate-600">
         Total Sessions
       </CardTitle>
-      <CalendarClock className="h-5 w-5 text-muted-foreground" />
+      <div className="p-2 bg-slate-100 rounded-lg">
+        <CalendarClock className="h-4 w-4 text-slate-600" />
+      </div>
     </CardHeader>
     <CardContent>
-      <div className="text-3xl font-bold">{summaryStats.total}</div>
-      <p className="text-xs text-muted-foreground">All scheduled sessions</p>
+      <div className="text-3xl font-bold text-slate-900">{summaryStats.total}</div>
+      <p className="text-xs text-slate-500 mt-1">All scheduled sessions</p>
     </CardContent>
   </Card>
 
-  <Card>
+  <Card className="border-slate-200 shadow-sm bg-white hover:shadow-md transition-all duration-200">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium text-muted-foreground">
+      <CardTitle className="text-sm font-semibold text-slate-600">
         Completed
       </CardTitle>
-      <CheckCircle className="h-5 w-5 text-green-500" />
+      <div className="p-2 bg-green-50 rounded-lg">
+        <CheckCircle className="h-4 w-4 text-green-600" />
+      </div>
     </CardHeader>
     <CardContent>
-      <div className="text-3xl font-bold">{summaryStats.completed}</div>
-      <p className="text-xs text-muted-foreground">Sessions successfully conducted</p>
+      <div className="text-3xl font-bold text-slate-900">{summaryStats.completed}</div>
+      <p className="text-xs text-slate-500 mt-1">Sessions successfully conducted</p>
     </CardContent>
   </Card>
 
-  <Card>
+  <Card className="border-slate-200 shadow-sm bg-white hover:shadow-md transition-all duration-200">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium text-muted-foreground">
+      <CardTitle className="text-sm font-semibold text-slate-600">
         Absences
       </CardTitle>
-      <AlertTriangle className="h-5 w-5 text-amber-500" />
+      <div className="p-2 bg-amber-50 rounded-lg">
+        <AlertTriangle className="h-4 w-4 text-amber-600" />
+      </div>
     </CardHeader>
     <CardContent>
-      <div className="text-3xl font-bold">{summaryStats.absent}</div>
-      <p className="text-xs text-muted-foreground">Trainer or trainee was absent</p>
+      <div className="text-3xl font-bold text-slate-900">{summaryStats.absent}</div>
+      <p className="text-xs text-slate-500 mt-1">Trainer or trainee was absent</p>
     </CardContent>
   </Card>
 
-  <Card>
+  <Card className="border-slate-200 shadow-sm bg-white hover:shadow-md transition-all duration-200">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium text-muted-foreground">
+      <CardTitle className="text-sm font-semibold text-slate-600">
         Cancelled
       </CardTitle>
-      <XCircle className="h-5 w-5 text-red-500" />
+      <div className="p-2 bg-red-50 rounded-lg">
+        <XCircle className="h-4 w-4 text-red-600" />
+      </div>
     </CardHeader>
     <CardContent>
-      <div className="text-3xl font-bold">{summaryStats.cancelled}</div>
-      <p className="text-xs text-muted-foreground">Cancelled by trainer or admin</p>
+      <div className="text-3xl font-bold text-slate-900">{summaryStats.cancelled}</div>
+      <p className="text-xs text-slate-500 mt-1">Cancelled by trainer or admin</p>
     </CardContent>
   </Card>
 </div>
 
         {/* Filters + Table */}
-        <Card>
-          <CardHeader>
+        <Card className="border-slate-200 shadow-sm bg-white overflow-hidden">
+          <CardHeader className="border-b border-slate-100 bg-white/50">
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-              <CardTitle>Session History</CardTitle>
+              <CardTitle className="text-xl font-bold text-slate-800">Session History</CardTitle>
               <div className="flex flex-wrap gap-2 items-center justify-end w-full sm:w-auto">
                 {user.role === "admin" && (
                   <Select value={filteredTrainerId} onValueChange={setFilteredTrainerId}>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-[180px] border-slate-200 bg-white focus:ring-slate-500">
                       <SelectValue placeholder="Trainer" />
                     </SelectTrigger>
                     <SelectContent>
@@ -314,7 +323,7 @@ const handleExport = useCallback(() => {
                 )}
 
                 <Select value={filteredStatus} onValueChange={setFilteredStatus}>
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-[180px] border-slate-200 bg-white focus:ring-slate-500">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -332,7 +341,7 @@ const handleExport = useCallback(() => {
                   placeholder="Search Session Type"
                   value={searchSessionType}
                   onChange={(e) => setSearchSessionType(e.target.value)}
-                  className="w-[220px]"
+                  className="w-[220px] border-slate-200 bg-white focus:ring-slate-500"
                 />
 
                 <Button
@@ -340,6 +349,7 @@ const handleExport = useCallback(() => {
                   size="sm"
                   onClick={handleExport}
                   disabled={sessionsToShow.length === 0}
+                  className="border-slate-200 hover:bg-slate-50 hover:text-slate-900"
                 >
                   <FileDown className="mr-2 h-4 w-4" />
                   Export CSV
@@ -350,13 +360,13 @@ const handleExport = useCallback(() => {
 
           <CardContent className="p-0 overflow-auto">
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[120px]">Date</TableHead>
-                  {user.role === "admin" && <TableHead>Trainer</TableHead>}
-                  <TableHead>Batch</TableHead>
-                  <TableHead>Session Name/Type</TableHead>
-                  <TableHead className="text-right">Status</TableHead>
+              <TableHeader className="bg-slate-50 border-b border-slate-100">
+                <TableRow className="hover:bg-slate-50/50">
+                  <TableHead className="w-[120px] font-semibold text-slate-700">Date</TableHead>
+                  {user.role === "admin" && <TableHead className="font-semibold text-slate-700">Trainer</TableHead>}
+                  <TableHead className="font-semibold text-slate-700">Batch</TableHead>
+                  <TableHead className="font-semibold text-slate-700">Session Name/Type</TableHead>
+                  <TableHead className="text-right font-semibold text-slate-700">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -364,28 +374,28 @@ const handleExport = useCallback(() => {
                   sessionsToShow.map((session) => {
                     const trainer = getTrainer(session.trainerId);
                     return (
-                      <TableRow key={session.id}>
-                        <TableCell>{format(new Date(session.date), "PP")}</TableCell>
+                      <TableRow key={session.id} className="hover:bg-slate-50/50 transition-colors border-slate-100">
+                        <TableCell className="text-slate-600 font-medium">{format(new Date(session.date), "PP")}</TableCell>
                         {user.role === "admin" && (
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <Avatar className="h-8 w-8">
+                              <Avatar className="h-8 w-8 border border-slate-200">
                                 <AvatarImage src={trainer?.avatar} />
-                                <AvatarFallback>
+                                <AvatarFallback className="bg-slate-100 text-slate-600">
                                   {trainer?.name?.charAt(0)}
                                 </AvatarFallback>
                               </Avatar>
-                              {trainer?.name}
+                              <span className="text-slate-700">{trainer?.name}</span>
                             </div>
                           </TableCell>
                         )}
-                        <TableCell>{session.batch}</TableCell>
-                        <TableCell>{session.sessionType}</TableCell>
+                        <TableCell className="text-slate-600">{session.batch}</TableCell>
+                        <TableCell className="text-slate-600">{session.sessionType}</TableCell>
                         <TableCell className="text-right">
                           <Badge
                             variant="outline"
                             className={cn(
-                              "capitalize font-semibold",
+                              "capitalize font-semibold border-0",
                               statusBadgeClasses[session.status]
                             )}
                           >
@@ -399,7 +409,7 @@ const handleExport = useCallback(() => {
                   <TableRow>
                     <TableCell
                       colSpan={user.role === "admin" ? 5 : 4}
-                      className="text-center text-muted-foreground py-6"
+                      className="text-center text-slate-500 py-12"
                     >
                       No sessions found for the applied filters.
                     </TableCell>

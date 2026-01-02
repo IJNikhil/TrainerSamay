@@ -74,12 +74,12 @@ export default function AvailabilityForm({ trainerId, initialAvailabilities, onU
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>My Weekly Availability</CardTitle>
-        <CardDescription>Toggle the days you are available and set your working hours.</CardDescription>
+    <Card className="border-slate-200 shadow-sm bg-white overflow-hidden">
+      <CardHeader className="border-b border-slate-100 bg-white/50 pb-6">
+        <CardTitle className="text-xl font-bold text-slate-800">My Weekly Availability</CardTitle>
+        <CardDescription className="text-slate-500">Toggle the days you are available and set your working hours.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
@@ -93,8 +93,8 @@ export default function AvailabilityForm({ trainerId, initialAvailabilities, onU
                     layout
                     transition={{ duration: 0.3, type: "spring", bounce: 0.2 }}
                     className={cn(
-                      "p-4 rounded-lg border transition-colors",
-                      isEnabled ? "bg-muted/40 border-primary/20" : "bg-transparent"
+                      "p-4 rounded-lg border transition-all duration-200",
+                      isEnabled ? "bg-indigo-50/30 border-indigo-100 shadow-sm" : "bg-white border-transparent hover:bg-slate-50"
                     )}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -103,8 +103,9 @@ export default function AvailabilityForm({ trainerId, initialAvailabilities, onU
                           id={`switch-${day}`}
                           checked={isEnabled}
                           onCheckedChange={(checked: boolean) => handleDayToggle(day, checked)}
+                          className="data-[state=checked]:bg-indigo-600"
                         />
-                        <FormLabel htmlFor={`switch-${day}`} className="text-lg font-medium min-w-[100px]">
+                        <FormLabel htmlFor={`switch-${day}`} className={cn("text-lg font-medium min-w-[100px] transition-colors", isEnabled ? "text-indigo-900" : "text-slate-600")}>
                           {day}
                         </FormLabel>
                       </div>
@@ -123,9 +124,9 @@ export default function AvailabilityForm({ trainerId, initialAvailabilities, onU
                               name={`availabilities.${fieldIndex}.startTime`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-xs text-muted-foreground">Start Time</FormLabel>
+                                  <FormLabel className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Start Time</FormLabel>
                                   <FormControl>
-                                    <Input type="time" {...field} className="bg-background w-full sm:w-[120px]" />
+                                    <Input type="time" {...field} className="bg-white border-slate-200 focus:border-indigo-500 w-full sm:w-[130px] font-mono" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -136,9 +137,9 @@ export default function AvailabilityForm({ trainerId, initialAvailabilities, onU
                               name={`availabilities.${fieldIndex}.endTime`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-xs text-muted-foreground">End Time</FormLabel>
+                                  <FormLabel className="text-xs font-semibold text-slate-500 uppercase tracking-wider">End Time</FormLabel>
                                   <FormControl>
-                                    <Input type="time" {...field} className="bg-background w-full sm:w-[120px]" />
+                                    <Input type="time" {...field} className="bg-white border-slate-200 focus:border-indigo-500 w-full sm:w-[130px] font-mono" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -153,10 +154,10 @@ export default function AvailabilityForm({ trainerId, initialAvailabilities, onU
               })}
             </div>
 
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-end pt-6 border-t border-slate-100">
               <Button
                 type="submit"
-                className="h-12 px-6 text-lg"
+                className="h-11 px-8 text-base font-medium bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm hover:shadow-md transition-all"
                 disabled={form.formState.isSubmitting || !form.formState.isDirty}
               >
                 Update Availability

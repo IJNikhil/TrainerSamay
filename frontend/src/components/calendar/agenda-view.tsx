@@ -6,10 +6,7 @@ import type { Session, User } from "../../lib/types";
 
 import {
   MapPin,
-  CheckCircle,
-  Ban,
   Users,
-  AlertTriangle,
   User as UserIcon,
 } from "lucide-react";
 
@@ -75,7 +72,7 @@ export default function AgendaView({
     trainers.find((t) => String(t.id) === String(trainerId))?.name || "Unknown";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {sortedDates.map((dateKey) => {
         const daySessions = groupedSessions[dateKey];
         const day = new Date(dateKey);
@@ -84,13 +81,13 @@ export default function AgendaView({
           <div key={dateKey}>
             <div
               className={cn(
-                "font-semibold mb-3 p-3 rounded-lg text-lg sticky top-[60px] bg-background/95 backdrop-blur-sm z-10 border-b-2",
-                isToday(day) ? "border-primary" : "border-border"
+                "font-semibold mb-4 px-1 text-lg sticky top-[60px] bg-gray-50/95 backdrop-blur-sm z-10 py-2 border-b border-indigo-100 flex items-center gap-2",
+                isToday(day) ? "text-indigo-700" : "text-slate-700"
               )}
             >
-              {format(day, "eeee, MMMM do")}
+              <span>{format(day, "eeee, MMMM do")}</span>
               {isToday(day) && (
-                <Badge className="ml-3 bg-primary text-primary-foreground">Today</Badge>
+                <Badge className="bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm border-0">Today</Badge>
               )}
             </div>
 
@@ -104,76 +101,62 @@ export default function AgendaView({
                     key={session.id}
                     onClick={() => onSessionClick(session)}
                     className={cn(
-                      "cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-transform border-l-4 border-border flex flex-col",
+                      "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 border-l-[4px] flex flex-col bg-white border-slate-200 shadow-sm",
                       {
-                        "bg-card": session.status === "Scheduled",
-                        "bg-green-50 dark:bg-green-950/40": session.status === "Completed",
-                        "bg-red-50 dark:bg-red-950/30 line-through": session.status === "Cancelled",
-                        "bg-amber-50 dark:bg-amber-950/40": session.status === "Absent",
+                        "border-l-indigo-500": session.status === "Scheduled",
+                        "border-l-emerald-500": session.status === "Completed",
+                        "border-l-red-500 opacity-80": session.status === "Cancelled",
+                        "border-l-amber-500": session.status === "Absent",
                       }
                     )}
                   >
-                    <CardHeader className="p-4">
-                      <CardTitle className="text-xl flex justify-between items-start">
-                        <span>{session.sessionType}</span>
-                        <div className="flex flex-col items-end gap-2">
-                          <Badge className="font-mono text-xs h-5 px-1.5 border border-border bg-muted text-foreground dark:bg-background dark:text-foreground">
-                            {format(sessionDate, "p")}
-                          </Badge>
+                    <CardHeader className="p-4 bg-white rounded-t-lg">
+                      <div className="flex justify-between items-start gap-2">
+                        <CardTitle className="text-lg font-bold text-slate-800 leading-snug break-words">
+                          {session.sessionType}
+                        </CardTitle>
+                        <Badge variant="outline" className="font-mono text-[10px] shrink-0 border-slate-200 bg-slate-50 text-slate-600">
+                          {format(sessionDate, "p")}
+                        </Badge>
+                      </div>
 
+                      <div className="flex flex-wrap gap-1 mt-2">
                           {session.status === "Started" && (
-                            <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200 border-yellow-300 dark:border-yellow-600 flex items-center gap-1">
-                              <CheckCircle className="w-3 h-3 mr-1" />
-                              Started
-                            </Badge>
+                            <Badge className="bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100 shadow-none">Started</Badge>
                           )}
                           {session.status === "Completed" && (
-                            <Badge className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 border-green-300 dark:border-green-600 flex items-center gap-1">
-                              <CheckCircle className="w-3 h-3 mr-1" />
-                              Completed
-                            </Badge>
+                            <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 shadow-none">Completed</Badge>
                           )}
                           {session.status === "Cancelled" && (
-                            <Badge className="bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300 border-red-300 dark:border-red-600 flex items-center gap-1">
-                              <Ban className="w-3 h-3 mr-1" />
-                              Cancelled
-                            </Badge>
+                            <Badge className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100 shadow-none">Cancelled</Badge>
                           )}
                           {session.status === "Absent" && (
-                            <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 border-amber-300 dark:border-amber-700 flex items-center gap-1">
-                              <AlertTriangle className="w-3 h-3 mr-1" />
-                              Absent
-                            </Badge>
+                            <Badge className="bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100 shadow-none">Absent</Badge>
                           )}
-                        </div>
-                      </CardTitle>
+                      </div>
                     </CardHeader>
 
                     <CardContent
-                      className={cn(
-                        "p-4 pt-0 space-y-2 text-sm flex-1 flex flex-col justify-between",
-                        { "text-muted-foreground": session.status !== "Scheduled" }
-                      )}
+                      className="p-4 pt-0 space-y-3 text-sm flex-1 flex flex-col justify-between"
                     >
-                      <div className="space-y-2">
+                      <div className="space-y-2 text-slate-600">
                         <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4" />
-                          <p>
-                            <strong>Batch:</strong> {session.batch}
-                          </p>
+                          <Users className="w-4 h-4 text-slate-400" />
+                          <span>
+                            Batch: <span className="font-medium text-slate-800">{session.batch}</span>
+                          </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <UserIcon className="w-4 h-4" />
-                          <p>
-                            <strong>Trainer:</strong>{" "}
-                            {getTrainerName(session.trainerId)}
-                          </p>
+                          <UserIcon className="w-4 h-4 text-slate-400" />
+                          <span>
+                             Trainer: <span className="font-medium text-slate-800">{getTrainerName(session.trainerId)}</span>
+                          </span>
                         </div>
                       </div>
 
-                      <div className="flex items-center text-inherit pt-2 mt-2 border-t border-dashed">
-                        <MapPin className="w-4 h-4 mr-2" />
-                        <span>{session.location}</span>
+                      <div className="flex items-center text-xs text-slate-500 pt-3 mt-2 border-t border-slate-100">
+                        <MapPin className="w-3 h-3 mr-1.5 text-slate-400" />
+                        <span className="truncate">{session.location || "No Location"}</span>
                       </div>
                     </CardContent>
                   </Card>

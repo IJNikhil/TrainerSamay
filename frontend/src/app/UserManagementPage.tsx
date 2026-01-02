@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
+import { cn } from "../lib/utils";
 
 import AuthenticatedLayout from "../components/layouts/authenticated-layout";
 import {
@@ -141,48 +142,51 @@ export default function UserManagement() {
   return (
     <AuthenticatedLayout>
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">User Management</h2>
-            <p className="text-muted-foreground">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">User Management</h2>
+            <p className="text-slate-500 mt-1">
               Add, edit, or manage user accounts.
             </p>
           </div>
-          <Button onClick={handleAddNewClick}>
+          <Button onClick={handleAddNewClick} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm">
             <PlusCircle className="mr-2 h-4 w-4" />
             New User
           </Button>
         </div>
 
-        <Card>
+        <Card className="border-slate-200 shadow-sm bg-white overflow-hidden">
           <CardContent className="p-0">
             <div className="w-full overflow-auto">
               <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[80px]">Avatar</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                <TableHeader className="bg-slate-50 border-b border-slate-100">
+                  <TableRow className="hover:bg-slate-50/50">
+                    <TableHead className="w-[80px] font-semibold text-slate-700">Avatar</TableHead>
+                    <TableHead className="font-semibold text-slate-700">Name</TableHead>
+                    <TableHead className="font-semibold text-slate-700">Email</TableHead>
+                    <TableHead className="font-semibold text-slate-700">Role</TableHead>
+                    <TableHead className="text-right font-semibold text-slate-700">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {users.length > 0 ? (
                     users.map((u) => (
-                      <TableRow key={u.id}>
+                      <TableRow key={u.id} className="hover:bg-slate-50/50 transition-colors border-slate-100">
                         <TableCell>
-                          <Avatar>
+                          <Avatar className="h-9 w-9 border border-slate-200">
                             <AvatarImage src={u.avatar} alt={u.name} />
-                            <AvatarFallback>{u.name.charAt(0)}</AvatarFallback>
+                            <AvatarFallback className="bg-slate-100 text-slate-600 font-medium font-mono">{u.name.charAt(0)}</AvatarFallback>
                           </Avatar>
                         </TableCell>
-                        <TableCell className="font-medium">{u.name}</TableCell>
-                        <TableCell className="text-muted-foreground">{u.email}</TableCell>
+                        <TableCell className="font-medium text-slate-900">{u.name}</TableCell>
+                        <TableCell className="text-slate-600">{u.email}</TableCell>
                         <TableCell>
                           <Badge
                             variant={u.role === "admin" ? "destructive" : "secondary"}
-                            className="capitalize"
+                            className={cn(
+                              "capitalize font-medium shadow-sm border-0",
+                              u.role === "admin" ? "bg-indigo-100 text-indigo-700 hover:bg-indigo-200" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                            )}
                           >
                             {u.role}
                           </Badge>
@@ -193,6 +197,7 @@ export default function UserManagement() {
                               variant="ghost"
                               size="sm"
                               onClick={() => handleEditClick(u)}
+                              className="text-slate-500 hover:text-indigo-600 hover:bg-indigo-50"
                             >
                               Edit
                             </Button>
@@ -204,7 +209,7 @@ export default function UserManagement() {
                     <TableRow>
                       <TableCell
                         colSpan={5}
-                        className="text-center text-muted-foreground h-24"
+                        className="text-center text-slate-500 h-32"
                       >
                         No users found.
                       </TableCell>

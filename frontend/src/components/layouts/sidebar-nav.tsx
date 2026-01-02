@@ -42,18 +42,18 @@ export function SidebarNav({ isCollapsed }: SidebarNavProps) {
   const renderLink = (item: NavItem) => {
     const isActive =
       location.pathname === item.href ||
-      location.pathname.startsWith(item.href + "/");
+      (item.href !== "/" && location.pathname.startsWith(item.href + "/"));
 
     return (
       <Button
         asChild
         type="button"
         className={cn(
-          "w-full justify-start h-11 bg-transparent hover:bg-muted transition-colors",
-          isCollapsed && "w-11 justify-center px-0",
+          "w-full justify-start h-10 transition-all duration-200 mb-1",
+          isCollapsed && "w-10 justify-center px-0",
           isActive
-            ? "bg-primary text-white dark:text-primary-foreground hover:bg-primary/90"
-            : "text-black dark:text-muted-foreground"
+            ? "bg-indigo-600 text-white shadow-md hover:bg-indigo-500"
+            : "bg-transparent text-slate-400 hover:text-white hover:bg-white/5"
         )}
       >
         <Link to={item.href} aria-current={isActive ? "page" : undefined}>
@@ -61,17 +61,14 @@ export function SidebarNav({ isCollapsed }: SidebarNavProps) {
             className={cn(
               "h-5 w-5 flex-shrink-0 transition-colors",
               isActive
-                ? "text-white dark:text-primary-foreground"
-                : "text-black dark:text-muted-foreground"
+                ? "text-white"
+                : "text-slate-400 group-hover:text-white"
             )}
           />
           <span
             className={cn(
-              "truncate transition-colors",
-              isCollapsed && "hidden",
-              isActive
-                ? "text-white dark:text-primary-foreground"
-                : "text-black dark:text-muted-foreground"
+              "truncate ml-3 text-sm font-medium",
+              isCollapsed && "hidden"
             )}
           >
             {item.label}
@@ -83,13 +80,13 @@ export function SidebarNav({ isCollapsed }: SidebarNavProps) {
 
   return (
     <TooltipProvider delayDuration={0}>
-      <nav className="grid gap-2">
+      <nav className="grid gap-1">
         {navItems.map((item) => (
           <div key={item.href}>
             {isCollapsed ? (
               <Tooltip>
                 <TooltipTrigger asChild>{renderLink(item)}</TooltipTrigger>
-                <TooltipContent side="right" align="center">
+                <TooltipContent side="right" align="center" className="bg-slate-800 text-white border-slate-700">
                   <p>{item.label}</p>
                 </TooltipContent>
               </Tooltip>

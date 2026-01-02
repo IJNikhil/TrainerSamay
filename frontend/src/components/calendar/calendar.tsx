@@ -23,6 +23,7 @@ import {
 
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { cn } from "../../lib/utils";
 import type { Session } from "../../lib/types";
@@ -51,19 +52,19 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
 
   return (
     <>
-      <Card className="overflow-hidden border-2 border-border">
-        <CardHeader className="flex items-center justify-between p-4 bg-muted/50 border-b-2 border-border">
-          <h2 className="text-xl font-bold tracking-tight">
+      <Card className="overflow-hidden border-slate-200 shadow-sm bg-white rounded-lg">
+        <CardHeader className="flex items-center justify-between p-4 bg-slate-50/50 border-b border-slate-100">
+          <h2 className="text-xl font-bold tracking-tight text-slate-800">
             {format(currentDate, "MMMM yyyy")}
           </h2>
           <div className="flex items-center gap-2">
-            <Button onClick={goToToday} variant="outline">
+            <Button onClick={goToToday} variant="outline" className="border-slate-200 text-slate-700 hover:bg-slate-100">
               Today
             </Button>
-            <Button onClick={prevMonth} variant="outline" size="icon">
+            <Button onClick={prevMonth} variant="outline" size="icon" className="border-slate-200 text-slate-700 hover:bg-slate-100">
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <Button onClick={nextMonth} variant="outline" size="icon">
+            <Button onClick={nextMonth} variant="outline" size="icon" className="border-slate-200 text-slate-700 hover:bg-slate-100">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
@@ -74,7 +75,7 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
             {days.map((day) => (
               <div
                 key={day}
-                className="text-center font-semibold text-muted-foreground text-sm py-3 border-b border-r border-border bg-muted/30"
+                className="text-center font-semibold text-slate-500 text-sm py-3 border-b border-r border-slate-100 bg-slate-50/30"
               >
                 <span className="hidden sm:inline">{day}</span>
                 <span className="sm:hidden">{day.charAt(0)}</span>
@@ -84,7 +85,7 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
             {Array.from({ length: startingDay }).map((_, i) => (
               <div
                 key={`empty-${i}`}
-                className="border-b border-r border-border bg-muted/20 min-h-[120px]"
+                className="border-b border-r border-slate-100 bg-slate-50/10 min-h-[120px]"
               />
             ))}
 
@@ -100,17 +101,17 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
                 <div
                   key={day.toISOString()}
                   className={cn(
-                    "relative border-b border-r border-border p-1 sm:p-2 flex flex-col min-h-[120px] group transition",
+                    "relative border-b border-r border-slate-100 p-1 sm:p-2 flex flex-col min-h-[120px] group transition-colors",
                     (index + startingDay + 1) % 7 === 0 ? "border-r-0" : "",
-                    isToday(day) ? "bg-primary/10" : "hover:bg-muted/40"
+                    isToday(day) ? "bg-indigo-50/10" : "hover:bg-slate-50/30"
                   )}
                 >
                   <time
                     className={cn(
-                      "font-semibold text-sm flex items-center justify-center h-8 w-8 rounded-full mb-1",
+                      "font-semibold text-sm flex items-center justify-center h-8 w-8 rounded-full mb-1 transition-colors",
                       isToday(day)
-                        ? "bg-primary text-primary-foreground"
-                        : "text-foreground"
+                        ? "bg-indigo-600 text-white shadow-sm"
+                        : "text-slate-600 group-hover:bg-slate-100"
                     )}
                   >
                     {format(day, "d")}
@@ -122,15 +123,12 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
                         key={session.id}
                         onClick={() => onSessionClick(session)}
                         className={cn(
-                          "w-full text-left p-1.5 rounded-md text-xs border-l-4 transition-all group/item relative border-border",
+                          "w-full text-left p-1.5 rounded-md text-xs border-l-[3px] transition-all group/item relative border-transparent shadow-sm hover:shadow-md",
                           {
-                            "bg-muted/60 text-foreground": session.status === "Scheduled",
-                            "bg-green-100 dark:bg-green-950/60 text-green-900 dark:text-green-200":
-                              session.status === "Completed",
-                            "bg-red-100 dark:bg-red-950/60 text-red-900 dark:text-red-200 line-through":
-                              session.status === "Cancelled",
-                            "bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200":
-                              session.status === "Absent",
+                            "bg-white border-l-indigo-500 text-slate-700": session.status === "Scheduled",
+                            "bg-emerald-50 border-l-emerald-500 text-emerald-800": session.status === "Completed",
+                            "bg-red-50 border-l-red-500 text-red-800 opacity-75 decoration-slate-400": session.status === "Cancelled",
+                            "bg-amber-50 border-l-amber-500 text-amber-800": session.status === "Absent",
                           }
                         )}
                       >
@@ -141,7 +139,7 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
                               <CheckCircle className="h-3 w-3 text-yellow-500" />
                             )}
                             {session.status === "Completed" && (
-                              <CheckCircle className="h-3 w-3 text-green-600" />
+                              <CheckCircle className="h-3 w-3 text-emerald-600" />
                             )}
                             {session.status === "Cancelled" && (
                               <Ban className="h-3 w-3 text-red-600" />
@@ -151,11 +149,11 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
                             )}
                           </div>
                         </div>
-                        <p className="hidden sm:flex items-center gap-1.5 truncate text-muted-foreground group-hover/item:text-inherit">
+                        <p className="hidden sm:flex items-center gap-1.5 truncate text-slate-500 group-hover/item:text-slate-700">
                           <Users className="h-3 w-3" />
                           {session.batch}
                         </p>
-                        <p className="font-mono truncate">
+                        <p className="font-mono truncate text-slate-400 text-[10px]">
                           {format(new Date(session.date), "p")}
                         </p>
                       </button>
@@ -164,7 +162,7 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
                     {overflowCount > 0 && (
                       <button
                         onClick={() => setSelectedDaySessions(daySessions)}
-                        className="text-xs text-blue-600 underline pt-1 hover:text-blue-800"
+                        className="text-xs text-indigo-600 font-medium hover:underline pt-1 w-full text-left pl-1"
                       >
                         +{overflowCount} more
                       </button>
@@ -180,18 +178,20 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
       {/* Dialog to show all session details for a day */}
       {selectedDaySessions && (
         <Dialog open={true} onOpenChange={() => setSelectedDaySessions(null)}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>
+          <DialogContent className="max-w-xl p-0 overflow-hidden bg-white border-slate-200">
+            <DialogHeader className="p-6 pb-2 border-b border-slate-100 bg-slate-50/50">
+              <DialogTitle className="text-xl text-slate-800">
                 Sessions on{" "}
-                {format(
-                  new Date(selectedDaySessions[0]?.date || new Date()),
-                  "PPPP"
-                )}
+                <span className="text-indigo-600">
+                  {format(
+                    new Date(selectedDaySessions[0]?.date || new Date()),
+                    "PPPP"
+                  )}
+                </span>
               </DialogTitle>
             </DialogHeader>
 
-            <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+            <div className="p-6 space-y-3 max-h-[60vh] overflow-y-auto bg-slate-50/30">
               {selectedDaySessions.map((session) => (
                 <Card
                   key={session.id}
@@ -200,27 +200,33 @@ export function CalendarView({ sessions, onSessionClick }: CalendarViewProps) {
                     onSessionClick(session);
                   }}
                   className={cn(
-                    "cursor-pointer border-l-4 transition shadow-sm hover:shadow-md",
+                    "cursor-pointer border-l-4 transition-all shadow-sm hover:shadow-md bg-white border-t-0 border-r-0 border-b-0",
                     {
-                      "border-muted": session.status === "Scheduled",
-                      "border-green-500": session.status === "Completed",
-                      "border-red-500": session.status === "Cancelled",
-                      "border-amber-500": session.status === "Absent",
+                      "border-l-indigo-500": session.status === "Scheduled",
+                      "border-l-emerald-500": session.status === "Completed",
+                      "border-l-red-500": session.status === "Cancelled",
+                      "border-l-amber-500": session.status === "Absent",
                     }
                   )}
                 >
-                  <CardContent className="p-4 space-y-1 text-sm">
-                    <div className="flex justify-between gap-2">
-                      <span className="font-semibold">{session.sessionType}</span>
-                      <span className="font-mono text-muted-foreground">
+                  <CardContent className="p-4 space-y-2 text-sm">
+                    <div className="flex justify-between items-start gap-2">
+                       <span className="font-bold text-lg text-slate-800">{session.sessionType}</span>
+                       <Badge variant="outline" className="font-mono text-xs border-slate-200  bg-slate-50">
                         {format(new Date(session.date), "p")}
-                      </span>
+                       </Badge>
                     </div>
-                    <p className="text-muted-foreground">
-                      <Users className="inline mr-1 h-4 w-4" />
-                      Batch: {session.batch}
-                    </p>
-                    <p className="text-muted-foreground">{session.location}</p>
+                    
+                    <div className="grid grid-cols-2 gap-2 text-slate-600">
+                         <p className="flex items-center gap-2">
+                           <Users className="h-4 w-4 text-slate-400" />
+                           <span>{session.batch}</span>
+                         </p>
+                         <p className="flex items-center gap-2">
+                            <Users className="h-4 w-4 text-slate-400" />
+                            <span>{session.location}</span>
+                         </p>
+                    </div>
                   </CardContent>
                 </Card>
               ))}

@@ -67,42 +67,42 @@ export default function WeekView({
   }, [sessions, weekStart, weekEnd]);
 
   return (
-    <Card className="border-2 border-border overflow-hidden">
-      <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-muted/50 border-b-2 border-border">
+    <Card className="border-slate-200 shadow-sm bg-white overflow-hidden">
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-slate-50/50 border-b border-slate-100">
         <div>
-          <CardTitle className="text-xl tracking-tight">Week View</CardTitle>
-          <CardDescription className="text-base font-medium text-foreground">
+          <CardTitle className="text-xl tracking-tight text-slate-800">Week View</CardTitle>
+          <CardDescription className="text-base font-medium text-slate-600">
             {format(weekStart, "MMMM d")} - {format(weekEnd, "MMMM d, yyyy")}
           </CardDescription>
         </div>
         <div className="flex items-center gap-2">
           <Button
             onClick={handleGoToCurrentWeek}
-            className="border border-border bg-background hover:bg-muted text-foreground px-3 py-1 rounded"
+            className="border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 px-3 py-1.5 rounded-md shadow-sm text-sm font-medium transition-colors"
             type="button"
           >
             Current Week
           </Button>
           <Button
             onClick={handlePrevWeek}
-            className="border border-border bg-background hover:bg-muted text-foreground rounded-full p-2 h-9 w-9"
+            className="border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-full p-2 h-9 w-9 shadow-sm"
             type="button"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Previous Week</span>
           </Button>
           <Button
             onClick={handleNextWeek}
-            className="border border-border bg-background hover:bg-muted text-foreground rounded-full p-2 h-9 w-9"
+            className="border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-full p-2 h-9 w-9 shadow-sm"
             type="button"
           >
-            <ChevronRight className="h-5 w-5" />
+            <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Next Week</span>
           </Button>
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-slate-100">
           {days.map((day) => {
             const daySessions = sessions
               .filter((session) => isSameDay(new Date(session.date), day))
@@ -115,20 +115,20 @@ export default function WeekView({
               <div
                 key={day.toString()}
                 className={cn(
-                  "p-4 flex flex-col md:flex-row gap-4 md:gap-6",
-                  isToday(day) && "bg-primary/5"
+                  "p-4 flex flex-col md:flex-row gap-4 md:gap-6 hover:bg-slate-50/30 transition-colors",
+                  isToday(day) && "bg-indigo-50/20"
                 )}
               >
-                <div className="md:w-40 flex-shrink-0">
+                <div className="md:w-32 flex-shrink-0 pt-1">
                   <h3
                     className={cn(
-                      "font-bold text-xl",
-                      isToday(day) && "text-primary"
+                      "font-bold text-lg",
+                      isToday(day) ? "text-indigo-600" : "text-slate-700"
                     )}
                   >
                     {format(day, "eeee")}
                   </h3>
-                  <p className="text-muted-foreground text-sm">
+                  <p className={cn("text-sm", isToday(day) ? "text-indigo-500 font-medium" : "text-slate-500")}>
                     {format(day, "MMMM d")}
                   </p>
                 </div>
@@ -146,86 +146,69 @@ export default function WeekView({
                             key={session.id}
                             onClick={() => onSessionClick(session)}
                             className={cn(
-                              "w-full text-left p-3 rounded-lg text-sm transition-all duration-200 border-l-4 flex flex-col justify-between min-h-[140px] hover:shadow-lg hover:-translate-y-0.5 border-border",
+                              "w-full text-left p-3 rounded-lg text-sm transition-all duration-200 border-l-[3px] flex flex-col justify-between min-h-[120px] shadow-sm hover:shadow-md hover:-translate-y-0.5 bg-white border border-slate-200/60",
                               {
-                                "bg-card": session.status === "Scheduled",
-                                "bg-green-50 dark:bg-green-950/40":
+                                "border-l-indigo-500": session.status === "Scheduled",
+                                "border-l-emerald-500 bg-emerald-50/10":
                                   session.status === "Completed",
-                                "bg-red-50 dark:bg-red-950/30 line-through":
+                                "border-l-red-500 bg-red-50/10 opacity-75":
                                   session.status === "Cancelled",
-                                "bg-amber-50 dark:bg-amber-950/40":
+                                "border-l-amber-500 bg-amber-50/10":
                                   session.status === "Absent",
                               }
                             )}
                           >
-                            <div
-                              className={cn({
-                                "text-muted-foreground":
-                                  session.status !== "Scheduled",
-                              })}
-                            >
-                              <div className="flex items-start justify-between gap-1">
-                                <p className="font-bold text-base text-foreground truncate">
+                            <div className="w-full">
+                              <div className="flex items-start justify-between gap-2 mb-2">
+                                <p className="font-semibold text-slate-800 text-base leading-tight truncate pr-1">
                                   {session.sessionType}
                                 </p>
-                                <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                                  <Badge className="font-mono text-xs h-5 px-1.5 border border-border bg-muted text-foreground dark:bg-background dark:text-foreground">
-                                    {format(sessionDate, "p")}
-                                  </Badge>
-                                  {session.status === "Started" && (
-                                    <span className="flex items-center gap-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200 border border-yellow-300 dark:border-yellow-600 rounded-full px-2 py-0.5 text-xs font-semibold">
-                                      <CheckCircle className="h-4 w-4 mr-1" />
-                                      Started
-                                    </span>
-                                  )}
-                                  {session.status === "Completed" && (
-                                    <span className="flex items-center gap-1 bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 border border-green-300 dark:border-green-600 rounded-full px-2 py-0.5 text-xs font-semibold">
-                                      <CheckCircle className="h-4 w-4 mr-1" />
-                                      Completed
-                                    </span>
-                                  )}
-                                  {session.status === "Cancelled" && (
-                                    <span className="flex items-center gap-1 bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300 border border-red-300 dark:border-red-600 rounded-full px-2 py-0.5 text-xs font-semibold">
-                                      <Ban className="h-4 w-4 mr-1" />
-                                      Cancelled
-                                    </span>
-                                  )}
-                                  {session.status === "Absent" && (
-                                    <span className="flex items-center gap-1 bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 border-amber-300 dark:border-amber-700 rounded-full px-2 py-0.5 text-xs font-semibold">
-                                      <AlertTriangle className="h-4 w-4 mr-1" />
-                                      Absent
-                                    </span>
-                                  )}
-                                </div>
+                                <Badge variant="outline" className="font-mono text-[10px] h-5 px-1.5 border-slate-200 bg-slate-50 text-slate-600 shrink-0">
+                                  {format(sessionDate, "p")}
+                                </Badge>
                               </div>
-                              <p className="flex items-center gap-1.5 truncate text-xs mt-1 text-current">
-                                <UserIcon className="h-3.5 w-3.5" />
-                                {trainer?.name || "N/A"}
-                              </p>
+                              
+                              <div className="space-y-1 mb-2">
+                                <p className="flex items-center gap-1.5 truncate text-xs text-slate-500">
+                                  <UserIcon className="h-3 w-3 text-slate-400" />
+                                  <span className="font-medium text-slate-600">{trainer?.name || "Unassigned"}</span>
+                                </p>
+                                <p className="flex items-center gap-1.5 truncate text-xs text-slate-500">
+                                  <Users className="h-3 w-3 text-slate-400" />
+                                  {session.batch}
+                                </p>
+                              </div>
                             </div>
-                            <div
-                              className={cn(
-                                "mt-2 space-y-1",
-                                session.status !== "Scheduled" &&
-                                  "text-muted-foreground"
+                            
+                            <div className="flex items-center justify-between pt-2 border-t border-slate-100 mt-auto w-full">
+                              <div className="flex items-center gap-1 text-xs text-slate-400 max-w-[60%]">
+                                <MapPin className="h-3 w-3 shrink-0" />
+                                <span className="truncate">{session.location || "No Location"}</span>
+                              </div>
+                              
+                              {session.status === "Completed" && (
+                                <span className="flex items-center gap-1 text-emerald-600 text-[10px] font-semibold uppercase tracking-wider">
+                                  <CheckCircle className="h-3 w-3" /> Done
+                                </span>
                               )}
-                            >
-                              <p className="flex items-center gap-1.5 truncate text-xs">
-                                <Users className="h-3.5 w-3.5" />
-                                {session.batch}
-                              </p>
-                              <p className="flex items-center gap-1.5 truncate text-xs">
-                                <MapPin className="h-3.5 w-3.5" />
-                                {session.location}
-                              </p>
+                              {session.status === "Cancelled" && (
+                                <span className="flex items-center gap-1 text-red-600 text-[10px] font-semibold uppercase tracking-wider">
+                                  <Ban className="h-3 w-3" /> Off
+                                </span>
+                              )}
+                             {session.status === "Absent" && (
+                                <span className="flex items-center gap-1 text-amber-600 text-[10px] font-semibold uppercase tracking-wider">
+                                  <AlertTriangle className="h-3 w-3" /> Absent
+                                </span>
+                              )}
                             </div>
                           </button>
                         );
                       })}
                     </div>
                   ) : (
-                    <div className="flex-grow flex items-center justify-center text-center text-muted-foreground text-sm italic h-full min-h-[140px] bg-muted/20 rounded-lg">
-                      No sessions
+                    <div className="flex items-center justify-center text-center text-slate-400 text-sm italic h-full min-h-[80px] border border-dashed border-slate-200 rounded-lg bg-slate-50/50">
+                      No sessions scheduled
                     </div>
                   )}
                 </div>
@@ -234,13 +217,14 @@ export default function WeekView({
           })}
         </div>
         {sessionsInView.length === 0 && (
-          <div className="py-20 text-center text-muted-foreground">
-            <CalendarDays className="mx-auto h-12 w-12 mb-4" />
-            <p className="text-lg font-semibold">No sessions scheduled.</p>
-            <p>Your schedule is clear for the selected week.</p>
+          <div className="py-20 text-center text-slate-500">
+            <CalendarDays className="mx-auto h-12 w-12 mb-4 text-slate-300" />
+            <p className="text-lg font-semibold text-slate-700">No sessions available.</p>
+            <p className="text-sm">Your schedule is empty for this week.</p>
           </div>
         )}
       </CardContent>
     </Card>
   );
 }
+
