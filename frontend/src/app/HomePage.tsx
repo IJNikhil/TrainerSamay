@@ -39,7 +39,7 @@ import TrainerFilter from "../components/calendar/trainer-filter";
 import { SessionDialog } from "../components/calendar/session-dialog";
 import { SessionDetailDialog } from "../components/calendar/session-detail-dialog";
 import UpcomingSessionNotification from "../components/calendar/upcoming-session-notification";
-import AdminDashboard from "../components/dashboard/admin-dashboard";
+import { DashboardStats } from "../components/dashboard/dashboard-stats";
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -241,6 +241,14 @@ export default function HomePage() {
       </div>
 
       <div className="flex-1 max-w-[1600px] w-full mx-auto px-4 md:px-8 -mt-24 relative z-20 pb-12">
+        
+        {/* New Stats Row */}
+        <DashboardStats 
+           sessions={sessionsToShow} 
+           trainers={trainers} 
+           userRole={(user?.role as "admin" | "trainer") || "trainer"} 
+        />
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/10 backdrop-blur-md p-1.5 rounded-xl border border-white/20 shadow-sm w-fit">
@@ -283,7 +291,7 @@ export default function HomePage() {
                   </div>
               )}
 
-              <div className="min-h-[600px] shadow-xl rounded-xl bg-white border border-slate-200/60 overflow-hidden">
+              <div className="min-h-[400px] md:min-h-[600px] shadow-xl rounded-xl bg-white border border-slate-200/60 overflow-hidden">
                 <TabsContent value="week" className="m-0 h-full">
                   <WeekView
                     sessions={sessionsToShow}
@@ -312,7 +320,7 @@ export default function HomePage() {
             {/* Smart Sidebar - Spans 4 cols */}
             <div className="lg:col-span-4 space-y-6 sticky top-6">
                
-               {/* 1. Next Up Widget */}
+               {/* 1. Next Up Widget - ONLY for Trainers */}
                {user?.role === "trainer" && (
                  <UpcomingSessionNotification
                    sessions={sessionsToShow}
@@ -375,26 +383,28 @@ export default function HomePage() {
                      </div>
                    )}
                  </ScrollArea>
-                 <div className="p-4 border-t border-slate-100 bg-slate-50">
+                 <div className="p-4 border-t border-slate-100 bg-slate-50 hidden md:block">
                     <Button onClick={handleAddNewClick} className="w-full bg-white border-dashed border-2 border-slate-300 text-slate-600 hover:border-indigo-500 hover:text-indigo-600 hover:bg-indigo-50">
                        <PlusCircle className="mr-2 h-4 w-4" /> Add to {format(selectedDate, "MMM d")}
                     </Button>
                  </div>
                </Card>
-
-               {/* 3. Admin Stats (if admin) or Quick Actions */}
-               {user?.role === "admin" && (
-                 <AdminDashboard
-                   sessions={sessions}
-                   trainers={trainers}
-                   availabilities={availabilities}
-                 />
-               )}
             </div>
 
           </div>
         </Tabs>
       </div>
+
+      {/* Mobile Floating Action Button (FAB) */}
+      {user?.role === "trainer" && (
+         <button
+            onClick={handleAddNewClick}
+            className="md:hidden fixed bottom-6 right-6 h-14 w-14 rounded-full bg-indigo-600 text-white shadow-2xl flex items-center justify-center z-50 hover:bg-indigo-700 transition-transform active:scale-95"
+         >
+            <PlusCircle className="h-6 w-6" />
+            <span className="sr-only">Add Session</span>
+         </button>
+      )}
 
       {/* Dialogs */}
       {user?.role === "trainer" && (

@@ -106,7 +106,7 @@ export function CalendarView({
         {Array.from({ length: startingDay }).map((_, i) => (
           <div
             key={`empty-${i}`}
-            className="border-b border-r border-slate-100 bg-slate-50/30 min-h-[140px]"
+            className="border-b border-r border-slate-100 bg-slate-50/30 min-h-[50px] md:min-h-[140px]"
           />
         ))}
 
@@ -126,17 +126,17 @@ export function CalendarView({
               key={day.toISOString()}
               onClick={() => onDateClick?.(day)}
               className={cn(
-                "relative border-b border-r border-slate-100 p-2 flex flex-col min-h-[140px] transition-all cursor-pointer group",
+                "relative border-b border-r border-slate-100 p-1 md:p-2 flex flex-col min-h-[50px] md:min-h-[140px] transition-all cursor-pointer group",
                 (index + startingDay + 1) % 7 === 0 ? "border-r-0" : "",
                 !isCurrentMonth && "bg-slate-50/50 text-slate-400",
                 isSelected && "bg-indigo-50/50 ring-2 ring-inset ring-indigo-500/20 z-10",
                 !isSelected && isDayToday ? "bg-white" : "bg-white hover:bg-slate-50"
               )}
             >
-              <div className="flex justify-between items-start mb-2">
+              <div className="flex justify-between items-start mb-1 md:mb-2">
                 <span
                   className={cn(
-                    "text-sm font-medium h-7 w-7 flex items-center justify-center rounded-full transition-colors",
+                    "text-xs md:text-sm font-medium h-6 w-6 md:h-7 md:w-7 flex items-center justify-center rounded-full transition-colors",
                     isDayToday
                       ? "bg-indigo-600 text-white shadow-md"
                       : isSelected 
@@ -146,14 +146,25 @@ export function CalendarView({
                 >
                   {format(day, "d")}
                 </span>
+                {/* Desktop Count */}
                 {daySessions.length > 0 && (
-                   <span className="text-[10px] font-medium text-slate-400">
+                   <span className="hidden md:inline-block text-[10px] font-medium text-slate-400">
                      {daySessions.length} events
                    </span>
                 )}
+                {/* Mobile Dot Indicator if events exist */}
+                <div className="md:hidden flex gap-0.5">
+                    {daySessions.length > 0 && (
+                        <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                    )}
+                     {daySessions.length > 1 && (
+                        <div className="w-1.5 h-1.5 rounded-full bg-indigo-300" />
+                    )}
+                </div>
               </div>
 
-              <div className="flex-grow space-y-1.5 overflow-hidden">
+              {/* Desktop: Show Pills */}
+              <div className="hidden md:block flex-grow space-y-1.5 overflow-hidden">
                 {visibleSessions.map((session) => (
                   <button
                     key={session.id}
@@ -174,7 +185,7 @@ export function CalendarView({
                     <span className="truncate font-medium flex-1">
                       {session.sessionType}
                     </span>
-                    <span className="text-[10px] opacity-70 whitespace-nowrap hidden sm:inline-block">
+                    <span className="text-[10px] opacity-70 whitespace-nowrap hidden lg:inline-block">
                        {format(new Date(session.date), "p")}
                     </span>
                   </button>
